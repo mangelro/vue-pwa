@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <h3>Thanks</h3>
+  <h4>Jie Peng - neighborhood999</h4>
+  <em>https://github.com/neighborhood999/vue-signature-pad</em>
 </template>
