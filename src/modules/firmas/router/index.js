@@ -19,5 +19,14 @@ export default {
 				id: router.params.id
 			})
 		},
+		{
+			name: 'Justificacion',
+			path: ':id(.{8}-.{4}-.{4}-.{4}-.{12})/justificacion',
+
+			component: () => import('../views/Justificacion.vue'),
+			props: (router)=>({
+				id: router.params.id
+			})
+		},		
 	],
 }

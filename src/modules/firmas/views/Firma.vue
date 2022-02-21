@@ -1,45 +1,39 @@
 <template>
   <the-time></the-time>
-  <article>
-    <div class="row no-wrap">
-      <div class="col min">
-        <img :src="employeePicture" class="circle large">
-      </div>
-      <div class="col">
-        <h5 class="no-margin">{{ employeeName }}</h5><a class="user-settings"><i>settings</i></a>
-        <div>Complementary text</div>
-      </div>
-    </div>
-  </article>
+  <employee-header :employeeId="id" :showOptions="true"></employee-header>
+
   <div class="signature-wrapper">
     <em>firma</em>  
     <VueSignaturePad ref="signaturePad" />
+  </div>
+
+  <div class="field textarea label border">
+      <textarea v-model="model.observaciones"></textarea>
+      <label>Observaciones</label>
   </div>
 
   <div class="field label border">
     <input type="password" v-model="model.pin">
     <label>PIN de firma</label>
   </div>
- 
 
 
-  <div>
+  <nav>
     <button @click="save">Firmar</button>
       <!-- <button @click="undo">Undo</button> -->
       <button @click="clear">Clear</button>
-  </div>
+  </nav>
 </template>
 
 <script>
 import { defineAsyncComponent } from "@vue/runtime-core";
-import { mapGetters } from "vuex";
 import model from '../models'
-
 
 
 export default {
   components: {
-    TheTime: defineAsyncComponent(() => import("@/components/TheTime")),
+    TheTime: defineAsyncComponent(() => import('@/components/TheTime')),
+    EmployeeHeader: defineAsyncComponent(() => import('../components/EmployeeHeader')),
   },
 
   props: {
@@ -49,50 +43,22 @@ export default {
     },
   },
 
-  watch: {
-    id() {
-      this.loadEmployee()
-      this.clear()
-    },
- 
-  },
-
-  created(){
-    this.loadEmployee()
-  },
-
   data: () => ({
-    imageData: '',
-    // employeePIN:'',
-    employeeName: '',
-    employeePicture:'',
     model,
   }),
-
-  computed: {
-    ...mapGetters("employees", ["getEmployeById"]),
-  },
-
-  methods: {
-    loadEmployee(){
-      const { name, picture} = this.getEmployeById(this.id)
-      this.employeeName = name
-      this.employeePicture=picture
-      this.model.id=this.id
-    },
-
+  
+  methods:{
     undo() {
-      this.$refs.signaturePad.undoSignature()
-    },
-    
+        this.$refs.signaturePad.undoSignature()
+      },
+      
     clear() {
-      this.$refs.signaturePad.clearSignature()
-      // this.imageData=''
-      // this.employeePIN=''
-      this.model.signature=''
-      this.model.pin=''
-      this.$refs.signaturePad.openSignaturePad()
-    },
+        this.$refs.signaturePad.clearSignature()
+        this.model.signature=''
+        this.model.pin=''
+        this.model.observaciones=''
+        this.$refs.signaturePad.openSignaturePad()
+      },
     
     save() {
       const { isEmpty, data } = this.$refs.signaturePad.saveSignature()
@@ -109,7 +75,6 @@ export default {
   },
   
   mounted(){
-    
     // eslint-disable-next-line no-undef
     this.$nextTick(()=>ui())
   }
@@ -130,9 +95,5 @@ export default {
     width: 150px;
     height: auto;
   }
-  .user-settings{
-    position: absolute;
-    top:2px;
-    right:0;
-  }
+
 </style>

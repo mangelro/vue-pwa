@@ -11,7 +11,7 @@
 
 <script>
 import { defineAsyncComponent } from '@vue/runtime-core'
-import API from '../api/signatureApi'
+//import API from '../api/signatureApi'
 
 export default {
 	components:
@@ -20,8 +20,8 @@ export default {
 	},
 
 	created(){
-		const api = API()
-		api.getLastSignatureById('ss')
+		// const api = API()
+		// api.getLastSignatureById('ss')
 	}
 }
 </script>
