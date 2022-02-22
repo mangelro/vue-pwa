@@ -9,12 +9,11 @@
 
 				<button data-ui="#dropdown1_" class="circle mail-settings" v-if="showOptions"><i>settings</i>
 					<div id="dropdown1_" data-ui="#dropdown1_" class="dropdown left no-wrap">
-						<a>Solicitar nuevo PIN</a>
 						<router-link :to="{name:'Justificacion', params:{id:employeeId}}">Justificar falta</router-link>
+						<a>Solicitar nuevo PIN</a>
 					</div>
 				</button>        
-				
-				<div><i>local_phone</i>{{phone}}&nbsp;<i>mail</i>{{email}}</div>
+				<div style="margin-top:15px"><i class="small">local_phone</i>{{phone}}&nbsp;<i class="small">mail</i>{{email}}</div>
 			</div>
 		</div>
 	</article>

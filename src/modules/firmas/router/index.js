@@ -7,7 +7,8 @@ export default {
 	import(/* webpackChunkName: "employees" */ '../layouts/FirmasLayout.vue'),
 	children: [
 		{
-			path: '',
+			name: 'Empleados',
+			path: '/',
 			component: () => import('../views/Blank.vue'),
 		},
 		{
@@ -27,6 +28,10 @@ export default {
 			props: (router)=>({
 				id: router.params.id
 			})
-		},		
+		},
+		{
+			path: '*',
+			redirect:{name:'Empleados'}
+		}		
 	],
 }

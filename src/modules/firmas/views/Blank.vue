@@ -1,3 +1,3 @@
 <template>
-	<h4>Firma</h4>
+	<img src="@/assets/workday.png" class="responsive">
 </template>

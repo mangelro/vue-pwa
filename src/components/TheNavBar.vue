@@ -12,7 +12,7 @@
       <div>Acerca de</div>
     </router-link>
 
-    <router-link :to="{name:'Registro'}">
+    <router-link :to="{name:'Empleados'}">
       <i>people</i>
       <div>Firma</div>
     </router-link>

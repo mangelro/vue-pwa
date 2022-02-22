@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 //import  * from '../modules/empleados/services'
-import  firmasApi from '../modules/firmas/api'
+import  firmasApi from '../modules/firmas/api/signatureApi'
 
 
 
@@ -12,8 +12,8 @@ const Plugin = {
         const token ='61eff0ab57cdc2f6dc99d117' //localStorage.getItem('token')
 
         const instance = axios.create({
-            baseURL: 'https://dummyapi.io/data/v1',
-            timeout: 1500,
+            baseURL: 'http://localhost:41321/v1',
+            timeout: 2500,
             headers: {'app-id': token},
 			...options
           });
@@ -24,6 +24,7 @@ const Plugin = {
         }
 
         app.config.globalProperties.$api= factories
+      
         const key='factories'
         app.provide(key,factories)
     }

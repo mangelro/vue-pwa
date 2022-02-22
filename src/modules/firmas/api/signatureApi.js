@@ -6,10 +6,31 @@ import axios from 'axios'
  */
 export default (client=axios) => ({
 
-	async postSignature(sig){
-
-		await client.post('/signatures',sig)
+	/**
+	 * Envío de firma de emplado
+	 * @param {*} signature 
+	 */
+	async postRegistro(signature){
+		await client.post('/signatures',signature)
 	},
+
+	/**
+	 * Envia una justificación
+	 * @param {*} justify 
+	 */
+	async postJustificacion(justify){
+
+		const {data} = await client.post('/signatures/justifies',justify)
+
+		console.log(data)
+		
+		// return {
+		// 	...justify,
+		// 	contentUrl: "http://localhost:50443/v1/signatures/justifies/21323/content"
+		// }
+		return data;
+	},
+
 
 	/**
 	 * Retorna la última firma del empleado
@@ -34,12 +55,8 @@ export default (client=axios) => ({
 	async getSignatureByDate(id,from,to){
 
 		const {data} = await client.get(`/signatures/${id}?f=${from}&t=${to}`)
-
 		return data
 	}
-
-
-
 })
 
 
