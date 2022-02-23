@@ -11,17 +11,12 @@
 
 <script>
 import { defineAsyncComponent } from '@vue/runtime-core'
-//import API from '../api/signatureApi'
 
 export default {
-	components:
-	{
-		EmployeesList: defineAsyncComponent(()=> import('../components/EmployeesList.vue'))
+	components: {
+		EmployeesList: defineAsyncComponent(() =>
+			import('../components/EmployeesList.vue')
+		),
 	},
-
-	created(){
-		// const api = API()
-		// api.getLastSignatureById('ss')
-	}
 }
 </script>

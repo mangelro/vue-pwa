@@ -1,4 +1,4 @@
-# vue-pwa
+# Registro accesso empleados
 
 ## Project setup
 ```

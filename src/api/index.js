@@ -9,12 +9,12 @@ const Plugin = {
 
     install(app, options={}){
    
-        const token ='61eff0ab57cdc2f6dc99d117' //localStorage.getItem('token')
+        //const token ='61eff0ab57cdc2f6dc99d117' //localStorage.getItem('token')
 
         const instance = axios.create({
             baseURL: 'http://localhost:41321/v1',
-            timeout: 2500,
-            headers: {'app-id': token},
+            timeout: 10000,
+            //headers: {'app-id': token},
 			...options
           });
           

@@ -1,146 +1,166 @@
 <template>
-   <form
-    :action="url"
-    class="dropzone"
-    id="dropzone"
-    enctype="multipart/form-data">
+	<form
+		:action="innerUrl"
+		class="dropzone"
+		id="dropzone"
+		enctype="multipart/form-data">
+		
+		<!-- Now setup your input fields -->
+		<slot name="input" :files="filesToProcess"></slot>
 
-    <!-- Now setup your input fields -->
-    <slot name="input" :files="filesToProcess"></slot>
-
-    <!-- this is were the previews should be shown. -->
-    <div class="previews dropzone-previews"></div> 
-  </form> 
+		<!-- this is were the previews should be shown. -->
+		<div class="previews dropzone-previews"></div>
+	</form>
 </template>
 
-
 <script>
-//eslint-disable-line
-import Dropzone from 'dropzone' 
-import msg from '../utils/DropZoneMsg'
 
-Dropzone.autoDiscover = false;
+import Dropzone from 'dropzone'
+import msg from '../utils/DropZoneMsg'
+import { isAbsoluteUrl } from '../utils/UrlHelper'
+
+Dropzone.autoDiscover = false
 
 export default {
-  props: {
-    url: {
-      type: String,
-      required: true,
-    },
-    maxFiles: {
-      type: Number,
-      required: false,
-      default: 1,
-    },
-    acceptedFiles: {
-      type: String,
-      requred: false,
-    },
-  },
+	props: {
+		url: {
+			type: String,
+			required: true,
+			validator: (value) => {
+				return isAbsoluteUrl(value)
+			},
+		},
+		maxFiles: {
+			type: Number,
+			required: false,
+			default: 1,
+		},
+		acceptedFiles: {
+			type: String,
+			requred: false,
+		},
+	},
 
-  data() {
-    return {
-      myDropzone: null,
-      filesToProcess:[]
-    }
-  },
+	data() {
+		return {
+			myDropzone: null,
+			innerUrl: this.url,
+			filesToProcess: [],
+		}
+	},
 
-  mounted() {
+	watch: {
+		innerUrl(newValue) {
+			if (!this.myDropzone) return
 
-    this.myDropzone = new Dropzone("#dropzone", {
+			this._throwIfNotAbsoluteUrl(newValue)
+			this.myDropzone.options.url = newValue
+		},
+	},
 
-      url:this.url,
+	mounted() {
+		this.myDropzone = new Dropzone('#dropzone', {
+			url: this.innerUrl,
+			method: 'put',
 
-      paramName: this._trickParamName, // The name that will be used to transfer the file
-      
-      previewsContainer:'.previews', // Defines where to display the file previews
+			paramName: this._trickParamName, // The name that will be used to transfer the file
 
-      maxFilesize: 100, // MB
+			previewsContainer: '.previews', // Defines where to display the file previews
 
-      uploadMultiple:this.maxFiles > 1,
-      maxFiles: this.maxFiles,
+			maxFilesize: 100, // MB
 
-      parallelUploads: 20,
+			uploadMultiple: this.maxFiles > 1,
+			maxFiles: this.maxFiles,
 
-      addRemoveLinks:true,
-      
-      //chunking:true,
-      // acceptedFiles: "image/*",
+			parallelUploads: 20,
 
-      acceptedFiles: this.acceptedFiles,
-      autoProcessQueue: false, //se necesita llamar explicitamente a .processQueue() para subir los ficheros.)
+			addRemoveLinks: true,
 
-      //headers:{'x-api-version':'1.0'},
+			//chunking:true,
+			// acceptedFiles: "image/*",
 
-      //Mensajes importados
-      ...msg, 
+			acceptedFiles: this.acceptedFiles,
+			autoProcessQueue: false, //se necesita llamar explicitamente a .processQueue() para subir los ficheros.)
 
-    })
+			//headers:{'x-api-version':'1.0'},
 
-    this.myDropzone.on("addedfile", this.onFileAdded)
-    this.myDropzone.on("removedfile", this.onRemovedFile)
-    this.myDropzone.on("complete", this.onCompleted)
-  },
-  
-  // beforeUnmount(){
-  //   this.dropzone.destroy();
-  // },
+			//Mensajes importados
+			...msg,
+		})
 
-  emits:['uploadingCompleted','fileAdded','preProcessQueue'],
+		this.myDropzone.on('addedfile', this.onFileAdded)
+		this.myDropzone.on('removedfile', this.onRemovedFile)
+		this.myDropzone.on('complete', this.onCompleted)
+	},
 
-  methods: {
-    /**
-     *  Pequeño truco para evitar que le añada [n] a los parámetros con el
-     *  nombre de los ficheros en subidas multiples
-     */
-    _trickParamName() {
-      return this.maxFiles > 1? "files":"file"
-    },
+	emits: ['uploadingCompleted', 'fileAdded', 'preProcessQueue'],
 
-    onFileAdded(file) {
-      // file.previewElement.addEventListener("click", () => {
-      //   this.myDropzone.removeFile(file)
-      // })
-      this.$emit('fileAdded',file)
-    },
+	methods: {
+		/**
+		 *  Pequeño truco para evitar que le añada [n] a los parámetros con el
+		 *  nombre de los ficheros en subidas multiples
+		 */
+		_trickParamName() {
+			return this.maxFiles > 1 ? 'files' : 'file'
+		},
 
-    onRemovedFile(file) {
-      console.log("File removed", file.name)
-    },
+		/**
+		 * Verifica que la url es un ruta absoluta
+		 */
+		_throwIfNotAbsoluteUrl(url) {
+			if (isAbsoluteUrl(url)) throw `Url no válida ${url}`
+		},
 
-    /**
-     * Evento que se proudce por cada uno de los ficheros procesados
-     */
-    onCompleted(file){
-      console.log("File Uploading Completed",file)
-      this.$emit('uploadingCompleted',file)
-      setTimeout(() => this.myDropzone.removeFile(file),5000)
-    },
+		/**
+		 * Establece una nueva url para el envío de ficheros.
+		 */
+		setUrl(url) {
+			this._throwIfNotAbsoluteUrl(url)
+			this.innerUrl = url
+		},
 
-    /**
-     * Procesa la cola de ficheros
-     */
-    processQueue() {
-      console.log("Pre-Process Queue", this.myDropzone)
-      this.filesToProcess=this.myDropzone.files
-      this.$emit('preProcessQueue',this.myDropzone.files)
-      console.log("Process Queue", this.myDropzone)
+		onFileAdded(file) {
+			// file.previewElement.addEventListener("click", () => {
+			//   this.myDropzone.removeFile(file)
+			// })
+			this.$emit('fileAdded', file)
+		},
 
-      this.$nextTick(()=>this.myDropzone.processQueue())
-      
-    },
+		onRemovedFile(file) {
+			console.log('File removed', file.name)
+		},
 
-    /**
-     * Limpia la cola de ficheros
-     */
-    clearQueue(){
-      console.log("Clear Queue", this.myDropzone.files)
-      this.myDropzone.files.forEach(f=>this.myDropzone.removeFile(f))
-    }
+		/**
+		 * Evento que se proudce por cada uno de los ficheros procesados
+		 */
+		onCompleted(file) {
+			console.log('File Uploading Completed', file)
+			this.$emit('uploadingCompleted', file)
+			setTimeout(() => this.myDropzone.removeFile(file), 5000)
+		},
 
-  },
+		/**
+		 * Procesa la cola de ficheros
+		 */
+		processQueue() {
+			console.log('Pre-Process Queue', this.myDropzone)
+			this.filesToProcess = this.myDropzone.files
+			this.$emit('preProcessQueue', this.myDropzone.files)
+
+			console.log('Process Queue', this.myDropzone)
+
+			this.$nextTick(() => this.myDropzone.processQueue())
+		},
+
+		/**
+		 * Limpia la cola de ficheros
+		 */
+		clearQueue() {
+			console.log('Clear Queue', this.myDropzone.files)
+			this.myDropzone.files.forEach((f) => this.myDropzone.removeFile(f))
+		},
+	},
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

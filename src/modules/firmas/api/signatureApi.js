@@ -21,8 +21,6 @@ export default (client=axios) => ({
 	async postJustificacion(justify){
 
 		const {data} = await client.post('/signatures/justifies',justify)
-
-		console.log(data)
 		
 		// return {
 		// 	...justify,
