@@ -13,17 +13,17 @@ module.exports = {
 		},
 
 		//configure the workbox plugin
-		//workboxPluginMode: "GenerateSW",
+		workboxPluginMode: 'GenerateSW',
 
-		workboxPluginMode: 'InjectManifest',
-		workboxOptions: {
-			swSrc: 'src/src-sw.js',
-			swDest: 'service-worker.js',
-			/*
-				Fichero de 'public/' excluidos del precached
-			*/
-			exclude: [/_redirects/, /web.config/, /robots.txt/],
-			maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-		},
+		// workboxPluginMode: 'InjectManifest',
+		// workboxOptions: {
+		// 	swSrc: 'src/src-sw.js',
+		// 	swDest: 'service-worker.js',
+		// 	/*
+		// 		Fichero de 'public/' excluidos del precached
+		// 	*/
+		// 	exclude: [/_redirects/, /web.config/, /robots.txt/],
+		// 	maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+		// },
 	},
 }

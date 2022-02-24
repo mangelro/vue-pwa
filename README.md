@@ -1,24 +1,12 @@
+
 # Registro accesso empleados
 
-## Project setup
-```
-npm install
-```
+## Vuex
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Router
+	### Child routes
+	### Guards
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## PWA
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Update de ficheros

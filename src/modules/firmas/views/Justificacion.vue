@@ -119,15 +119,13 @@ export default {
 			}
 
 			try {
-				const { contentUrl } = await this.$api.signature.postJustificacion(
-					this.model
-				)
+				const { contentUrl } = await this.$api.signature.postJustificacion(this.model)
 
 				this.$refs.mydropzone.setUrl(contentUrl)
 				this.$refs.mydropzone.processQueue()
 				this.clear()
 			} catch (err) {
-				console.log(err)
+				this.$refs.beerToast.error(err,{msToHide:2000})
 			}
 		},
 

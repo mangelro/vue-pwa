@@ -21,12 +21,8 @@ export default (client=axios) => ({
 	async postJustificacion(justify){
 
 		const {data} = await client.post('/signatures/justifies',justify)
-		
-		// return {
-		// 	...justify,
-		// 	contentUrl: "http://localhost:50443/v1/signatures/justifies/21323/content"
-		// }
-		return data;
+	
+		return data
 	},
 
 

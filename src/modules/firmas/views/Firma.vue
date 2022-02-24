@@ -23,10 +23,8 @@
 		</div>
 
 		<div class="col s12">
-			<div class="field label border">
-				<input type="password" v-model="model.pin" maxlength="4" />
-				<label>PIN de firma</label>
-			</div>
+				<!-- <input type="password" v-model="model.pin" maxlength="4" /> -->
+				<password-input v-model="model.pin" ></password-input>
 		</div>
 	</div>
 
@@ -36,9 +34,10 @@
 		<button @click="clear">Clear</button>
 	</nav>
 
-	<Teleport to="body">
+	<Teleport to="body">	
 		<beer-toast id="toastFirma" ref="beerToast"></beer-toast>
 	</Teleport>
+	
 </template>
 
 <script>
@@ -49,6 +48,7 @@ import { getCurrentPosition } from '../utils/Location'
 export default {
 	components: {
 		TheTime: defineAsyncComponent(() => import('@/components/TheTime')),
+		PasswordInput: defineAsyncComponent(() => import('@/components/PasswordInput.vue')),
 		EmployeeHeader: defineAsyncComponent(() => import('../components/EmployeeHeader')),
 	},
 
@@ -81,6 +81,8 @@ export default {
 		},
 
 		async save() {
+			console.log('El PIN',this.model.pin)
+
 			const { isEmpty, data } = this.$refs.signaturePad.saveSignature()
 
 			if (isEmpty || this.model.pin.length === 0) {
@@ -93,16 +95,21 @@ export default {
 			this.model.signature = data
 			this.model.date = new Date().toISOString()
 
-			try {
-				this.model.location = await getCurrentPosition({
-					enableHighAccuracy: false,
-				})
-			} catch (err) {
-				console.warn(err)
+			try{
+				try {
+					this.model.location = await getCurrentPosition({
+						enableHighAccuracy: false,
+					})
+				} catch (err) {
+					console.warn(err)
+				}
+				
+				await this.$api.signature.postRegistro(this.model)			
+				this.clear()
 			}
-			
-			await this.$api.signature.postRegistro(this.model)			
-			this.clear()
+			catch (err){
+				this.$refs.beerToast.error(err,{msToHide:2000})
+			}
 		},
 	},
 
