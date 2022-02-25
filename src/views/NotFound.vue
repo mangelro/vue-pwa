@@ -1,4 +1,7 @@
 <template>
-	<h4>404</h4>
-	<h3>Página no encontrada</h3>
+	<div class="row">
+		<div class="cel s12">
+			<img src="@/assets/404error.png" class="responsive small" />
+		</div>
+	</div>
 </template>

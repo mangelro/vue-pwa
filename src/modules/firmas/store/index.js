@@ -1,20 +1,13 @@
-
 export default {
-    
-    namespaced:true,
+	namespaced: true,
 
-    state:()=>({
-    }),
+	state: () => ({}),
 
-    mutations:{
-    },
+	mutations: {},
 
-	actions:{
-        saveSignature:()=>{
-        }
+	actions: {
+		saveSignature: () => {},
 	},
 
-    getters:{
-	}
-
+	getters: {},
 }

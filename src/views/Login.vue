@@ -1,10 +1,16 @@
 <template>
-	<article class="no-padding">
-		<the-login
+	<div class="row">
+		<div class="col m2"></div>
+		<div class="col s12 m8">
+		<the-login	
 			@logged="loggedUser"
 			@loggingError="loggingError">
 		</the-login>
-	</article>
+		</div>
+	</div>
+	<Teleport to="body">	
+		<beer-toast id="toastFirma" ref="beerToast"></beer-toast>
+	</Teleport>	
 </template>
 
 <script>
@@ -16,6 +22,7 @@ export default {
 		returnUrl:{
 			typeof:String,
 			required:false,
+			default:''
 		}
 	},
 
@@ -24,15 +31,29 @@ export default {
 	},
 
 	methods: {
-	
 
 		loggedUser() {
-			if (this.returnUrl)
-				this.$router.push(this.returnUrl)
+			
+			const url =this.returnUrl||'/'
+			
+			//console.assert(returnUrl,'sin direccion')
+			console.log(url)
+
+			this.$router.push(url)
+			// if (!returnUrl){
+			// 	console.log('A direccion',returnUrl)
+			// 	this.$router.push(returnUrl)
+			// }
+			// else
+			// {
+			// 	console.log('A Home',returnUrl)
+			// 	this.$router.push({name:'Home'})
+			// }
+				
 		},
 
 		loggingError(error) {
-			this.$beer.toast.warning(error)
+			this.$refs.beerToast.error(error)
 		},
 	},
 }

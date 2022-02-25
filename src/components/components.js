@@ -3,8 +3,9 @@
  * la App
  */
 
-
 import BeerToast from './BeerToast.vue'
+import BeerLoader from './BeerLoader.vue'
+import InputPassword from './InputPassword.vue'
 
 
-export default {BeerToast}
+export {BeerToast,BeerLoader,InputPassword}

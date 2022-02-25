@@ -26,12 +26,13 @@
 			<em>Máx. 3 archivos</em>
 		</div>
 
-		<div class="col s12">
+			<div class="col s12">
 			<div class="field label border">
-				<input type="password" v-model="model.pin" maxlength="4" />
-				<label>PIN de firma</label>
+				<input-password v-model="model.pin"  maxlength="4"></input-password>
+				<label>PIN</label>
 			</div>
 		</div>
+
 	</div>
 
 	<nav>

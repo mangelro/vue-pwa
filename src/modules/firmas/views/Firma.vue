@@ -5,7 +5,7 @@
 		</div>
 
 		<div class="col s12">
-			<employee-header :employeeId="id" :showOptions="true"></employee-header>
+			<employee-header :employeeId="id" :showOptions="true" ></employee-header>
 		</div>
 
 		<div class="col s12">
@@ -23,8 +23,10 @@
 		</div>
 
 		<div class="col s12">
-				<!-- <input type="password" v-model="model.pin" maxlength="4" /> -->
-				<password-input v-model="model.pin" ></password-input>
+			<div class="field label border">
+				<input-password v-model="model.pin" maxlength="4" ></input-password>
+				<label>PIN</label>
+			</div>
 		</div>
 	</div>
 
@@ -48,7 +50,6 @@ import { getCurrentPosition } from '../utils/Location'
 export default {
 	components: {
 		TheTime: defineAsyncComponent(() => import('@/components/TheTime')),
-		PasswordInput: defineAsyncComponent(() => import('@/components/PasswordInput.vue')),
 		EmployeeHeader: defineAsyncComponent(() => import('../components/EmployeeHeader')),
 	},
 
@@ -64,6 +65,7 @@ export default {
 	}),
 
 	created() {
+		this.model.pin='123'
 		this.model.employeeId = this.id
 	},
 
@@ -115,18 +117,21 @@ export default {
 
 	mounted() {
 		// eslint-disable-next-line no-undef
-		if (!window.ui)  this.$nextTick(() => ui())
+		this.$nextTick(() => ui())
 	},
 }
 </script>
 
 <style scoped>
 .signature-wrapper {
-	border: 2px solid;
-	border-color: var(--secondary);
-	border-radius: 8rem;
+	border: 1px solid var(--on-background);
+	border-radius: 10rem;
 	height: 30vh;
 	margin: 10px 0;
+}
+
+.signature-wrapper:hover{
+	border: 1px solid var(--primary);
 }
 
 .img-signatgure {

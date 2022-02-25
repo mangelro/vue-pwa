@@ -18,5 +18,8 @@ export default {
 			import('../components/EmployeesList.vue')
 		),
 	},
+	data: ()=>({
+		showEmployees:true
+	}),
 }
 </script>

@@ -1,12 +1,16 @@
 <template>
-	<a
-		class="chip round large"
-		v-for="item in getAllEmployees"
-		:key="item.id"
-		@click="$router.push({ name: 'Firma', params: { id: item.id } })">
-		<img :src="item.picture" />
-		<span>{{ item.name }}</span>
-	</a>
+	<details ref="employeesExpand">
+		<summary><i>people</i><span>Empleados</span></summary>
+		<p>Selecionate.</p>
+			<a
+				class="chip round large"
+				v-for="item in getAllEmployees"
+				:key="item.id"
+				@click="onClick(item.id)">
+				<img :src="item.picture" />
+				<span>{{ item.name }}</span>
+			</a>
+	</details>
 </template>
 
 <script>
@@ -22,11 +26,31 @@ export default {
 	computed: {
 		...mapGetters('employees', ['getAllEmployees']),
 	},
+
+	emits:['selectedEmployee'],
+
+	methods:{
+		onClick(id){
+			
+			setTimeout(()=>{
+				this.$refs.employeesExpand.removeAttribute('open')
+			},200)
+			
+			this.$router.push({ name: 'Firma', params: {id} })
+			
+			this.$emit('selectedEmployee')			
+		}
+	}
 }
 </script>
 
 <style scoped>
 a {
 	margin: 5px;
+}
+summary span{
+	font-size:20rem;
+	margin:0;
+	padding:0;
 }
 </style>

@@ -1,52 +1,52 @@
 <template>
-	<img src="../assets/Signup.svg" class="responsive medium" />
-	
-    <div class="padding">
-		<h5 class="no-margin">Acceso </h5>
-		<div>
-			<div class="row">
-				<div class="col s1 m2">&nbsp;</div>
-				<div class="col s10 m8">
-					<div class="field label prefix">
-						<i>account_circle</i>
-						<input type="text" v-model.trim="name" />
-                        <label>Nombre de usuario</label>
+
+	<article class="no-padding">
+		<img src="../assets/login.png" class="responsive medium" />
+		<div class="padding">
+			<h5 class="no-margin">Acceso al sistema</h5>
+			
+			<div>
+				<div class="row">
+					<div class="col s1 m2">&nbsp;</div>
+					<div class="col s10 m8">
+						<div class="field label prefix">
+							<i>account_circle</i>
+							<input type="text" v-model.trim="name" />
+							<label>Nombre de usuario</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s1 m2">&nbsp;</div>
+					<div class="col s10 m8">
+						<div class="field label prefix">
+							<i>password</i>
+							<input type="password" v-model.trim="pass" />
+							<label>Clave de usuario</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s1 m2"></div>
+					<div class="col s10 m8">
+						<label class="checkbox">
+							<input type="checkbox" v-bind="rememberMe">
+							<span>Recordarme es en este equipo</span>
+						</label>
 					</div>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col s1 m2">&nbsp;</div>
-				<div class="col s10 m8">
-					<div class="field label prefix">
-						<i>password</i>
-						<input type="password" v-model="pass" />
-						<label>Clave de usuario</label>
-					</div>
+			<nav>
+				<div class="row">
+					<div class="col s12 m6"><button @click="authUser" class="responsive">Acceso</button></div>
+					<div class="col s12 m6"><a href="void(0)" class="responsive">Recordar contraseña</a></div>
 				</div>
-			</div>
-
-			<div class="row">
-				<div class="col s1 m2"></div>
-				<div class="col s10 m8">
-					<label class="switch">
-						<input type="checkbox" v-model="rememberMe" />
-						<span>Recordarme en este equipo</span>
-					</label>
-				</div>
-			</div>
+			</nav>
 		</div>
-
-		<nav>
-			<div class="col s2 m2">&nbsp;</div>
-			<div class="col s9"><button @click="authUser" class="large-width center-aling">Acceso</button></div>
-		</nav>
-
-		<div class="row">
-			<div class="col s12 m6 center-align">Olvidó su clave</div>
-			<div class="col s12 m6 center-align"></div>
-        </div>
-    </div>
+	</article>
 
 </template>
 

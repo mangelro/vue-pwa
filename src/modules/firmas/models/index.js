@@ -1,9 +1,10 @@
 
- export const registerModel={
+export const registerModel={
 	employeeId:'',
-	signature:'',
 	date:'',
 	pin:'',
+
+	signature:'',
 	observations:'',
 	location:null
 }
@@ -11,8 +12,9 @@
 export const justifyModel={
 	employeeId:'',
 	date:'',
-	justify:'',
 	pin:'',
+
+	justify:'',
 }
 
 

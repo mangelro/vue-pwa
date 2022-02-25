@@ -6,7 +6,7 @@
 		enctype="multipart/form-data">
 		
 		<!-- Now setup your input fields -->
-		<slot name="input" :files="filesToProcess"></slot>
+		<slot :files="filesToProcess"></slot>
 
 		<!-- this is were the previews should be shown. -->
 		<div class="previews dropzone-previews"></div>
