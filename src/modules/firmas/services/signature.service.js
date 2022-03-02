@@ -25,7 +25,6 @@ export default (client=axios) => ({
 		return data
 	},
 
-
 	/**
 	 * Retorna la última firma del empleado
 	 * 

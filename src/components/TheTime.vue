@@ -1,6 +1,6 @@
 <template>
 	<div class="time-wrapper">
-		<h3>{{getCurrentTime}}</h3>
+		<h4>{{toDateString}}</h4>
 	</div>
 	
 </template>
@@ -11,9 +11,11 @@ export default {
 		theTime:new Date()
 	}),
 	computed:{
-		getCurrentTime(){
-			return this.theTime.toLocaleString('es-ES')
+		toDateString(){
+			const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
+			return this.theTime.toLocaleTimeString('es-ES',options)
 		}
+
 	},
 
 	created(){

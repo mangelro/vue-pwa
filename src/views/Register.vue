@@ -2,10 +2,7 @@
 	<div class="row">
 		<div class="col m2"></div>
 		<div class="col s12 m8">
-		<the-login	
-			@logged="loggedUser"
-			@loggingError="loggingError">
-		</the-login>
+		<the-register urlLogin="/login" @register-error="onError"></the-register>
 		</div>
 	</div>
 	<Teleport to="body">	
@@ -27,19 +24,14 @@ export default {
 	},
 
 	components: {
-		TheLogin: defineAsyncComponent(() => import('../modules/auth/components/TheLogin.vue')),
+		TheRegister: defineAsyncComponent(() => import('../modules/auth/components/TheRegister.vue')),
 	},
 
 	methods: {
-
-		loggedUser() {
-			const url =this.returnUrl||'/'
-			this.$router.push(url)
-		},
-
-		loggingError(error) {
+		onError(error){
+			console.log(error)
 			this.$refs.beerToast.error(error)
-		},
+		}
 	},
 }
 </script>

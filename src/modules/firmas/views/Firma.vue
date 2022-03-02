@@ -36,6 +36,11 @@
 		<button @click="clear">Clear</button>
 	</nav>
 
+
+	<div v-if="model">
+		{{model.location}}
+	</div>
+
 	<Teleport to="body">	
 		<beer-toast id="toastFirma" ref="beerToast"></beer-toast>
 	</Teleport>

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters,mapActions } from 'vuex'
 //import ListBase from '@/components/base/ListBase'
 
 export default {
@@ -23,6 +23,7 @@ export default {
 	},
 
 	data: () => ({}),
+
 	computed: {
 		...mapGetters('employees', ['getAllEmployees']),
 	},
@@ -30,6 +31,9 @@ export default {
 	emits:['selectedEmployee'],
 
 	methods:{
+
+		...mapActions('employees',['loadAllEmployees']),
+
 		onClick(id){
 			
 			setTimeout(()=>{
@@ -40,7 +44,12 @@ export default {
 			
 			this.$emit('selectedEmployee')			
 		}
+	},
+
+	created(){
+		this.loadAllEmployees()
 	}
+	
 }
 </script>
 

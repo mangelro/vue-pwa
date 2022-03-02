@@ -3,14 +3,14 @@
 		<div class="col s12"><h3>Justificación</h3></div>
 
 		<div class="col s12">
-			<employee-header :employeeId="id" :showOptions="false"></employee-header>
+			<employee-header :employeeId="id" :showOptions="true"></employee-header>
 		</div>
 
 		<div class="col s12">
 			<div class="field label border">
-				<input type="date" v-model="_justifyDate" />
-				<label>Fecha justificación</label>
-				<em>Máx. 10 días</em>
+				<input-date v-model="justifyDate" />
+				<label class="active">Fecha justificación</label>
+				<em>{{toDateString}} (Máx. 10 días)</em>
 			</div>
 		</div>
 
@@ -50,8 +50,8 @@
 import { defineAsyncComponent } from '@vue/runtime-core'
 import DropZone from '../components/DropZone'
 import { justifyModel } from '../models'
-import {DaysBetweenDates, nowUTC} from '../utils/DateHelper'
-
+import {DaysBetweenDates, nowUTC} from '@/utils/DateHelper'
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',second:'false' }
 export default {
 	components: {
 		EmployeeHeader: defineAsyncComponent(() =>
@@ -72,27 +72,20 @@ export default {
 		model: justifyModel,
 	}),
 
-	computed: {
-		_justifyDate: {
-			get() {
-				const y = this.justifyDate.getFullYear().toString()
-				const m = (this.justifyDate.getMonth() + 1).toString().padStart(2, '0')
-				const d = this.justifyDate.getDate().toString().padStart(2, '0')
-				return `${y}-${m}-${d}`
-			},
-			set(value) {
-				let [y, m, d] = value.split('-')
-				this.justifyDate = new Date(Date.UTC(y, m - 1, d, 0, 0, 0))
-			},
-		},
+	computed:{
+		toDateString(){
+			return this.justifyDate.toLocaleDateString('es-ES',options)
+		}
 	},
 
 	watch: {
-		justifyDate(newValue, oldValue) {
+		justifyDate(newValue) {
+			console.log(newValue)
 
 			if (!this._validJustifyDate(newValue)) {
-				this.justifyDate = oldValue
-				this.$refs.beerToast.warning('Solo son validas las justificaciones de los 10 dias anteriores',{msToHide:1500})
+				this.$refs.beerToast.warning('Solo son válidas las justificaciones de los 10 dias anteriores',{msToHide:1500})
+				this.justifyDate = new nowUTC()
+
 			} else {
 				this.model.date = newValue.toISOString()
 			}
@@ -109,7 +102,7 @@ export default {
 		 * Solo son validas las justificaciones de los 10 dias anteriores
 		 */
 		_validJustifyDate(justifyDate) {
-			const days = DaysBetweenDates(new Date(),justifyDate)
+			const days = DaysBetweenDates(justifyDate,new Date())
 			return days > 0 && days < 10
 		},
 

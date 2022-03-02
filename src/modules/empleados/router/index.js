@@ -1,30 +1,24 @@
-
 /**
  * Rutas hijas del modulo
  */
 
-
-
-//  export default {
-//     name:'module-name',
-//     component: ()=>import(/* webpackChunName:"daybook"*/ '../layouts/DayBookLayout.vue'),
-//     children:[
-//         {
-//             path:'',
-//             name:'no-entry',
-//             component: ()=>import('../views/NoEntrySelected.vue'),
-         
-//         },
-//         {
-//             path:':id(\\d+)',
-//             name:'entry',
-//             component: ()=>import('../views/EntryView.vue'),
-//             //De esta form se hace más evidente el id necesario en el componente,
-//             props: (router)=>{
-//                 return {
-//                     id:router.params.id                        
-//                 }
-//             }
-//         }
-//     ]    
-// }
+export default {
+	name: 'Empleados',
+	component: () => import(/* webpackChunName:"EmpleadosLayout"*/ '../layouts/EmpleadosLayout.vue'),
+	children: [
+		{
+			name:'Empleados-Blank',
+			path:'',
+			component: () => import('../views/Blank.vue'),
+		},
+		{
+			name:'Empleados-Vacaciones',
+			path:'vacaciones',
+			component: () => import('../views/Vacaciones.vue'),
+		},
+		// {
+		// 	path: '*',
+		// 	redirect: { name: 'Empleados-Blank' },
+		// },
+	],
+}

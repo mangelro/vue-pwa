@@ -16,10 +16,10 @@
 						id="dropdown1_"
 						data-ui="#dropdown1_"
 						class="dropdown left no-wrap">
-
 						<router-link :to="{ name: 'Justificacion', params: { id: employeeId } }">Justificar falta</router-link>
+						<router-link :to="{ name: 'Empleados-Vacaciones'}">Vacaciones y permisos</router-link>
+						<router-link :to="{ name: 'Empleados-Blank'}">Modificar datos</router-link>
 						<a>Solicitar nuevo PIN</a>
-						<router-link :to="{ name: 'Usuarios', params: { id: employeeId } }">Modificar datos</router-link>
 					</div>
 				</button>
 				<div style="margin-top: 15px">
