@@ -67,13 +67,10 @@ export default {
 
 		async authUser() {
 			this.$emit('logging', this.model)
+
 			try{
-				if (await this.login(this.model)) {
-					this.onLogin()
-				} else {
-					this.errorForm = 'Usuario o clave no válida'
-					this.onError()
-				}
+				await this.login(this.model)
+				this.onLogin()
 			}
 			catch(error){
 				this.errorForm=error

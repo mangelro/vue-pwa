@@ -11,6 +11,9 @@
 				<span>{{ item.name }}</span>
 			</a>
 	</details>
+	<Teleport to="body">	
+		<beer-toast id="toastFirma" ref="beerToast"></beer-toast>
+	</Teleport>
 </template>
 
 <script>
@@ -46,8 +49,15 @@ export default {
 		}
 	},
 
-	created(){
-		this.loadAllEmployees()
+	async created(){
+		try{
+			await this.loadAllEmployees()
+		}
+		catch(error)
+		{
+			this.$refs.beerToast.error(error,{msToHide:2000})
+		}
+		
 	}
 	
 }

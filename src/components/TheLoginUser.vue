@@ -6,15 +6,14 @@ import { mapState } from 'vuex';
 		
 	</a> -->
 	<a v-if="isLoggedIn">
-		<span><i class="outlined">account_circle</i>{{name}}</span>
-		<a href="./" @click.prevent="logOut"><i class="small outlined">exit_to_app</i>Salir</a>
+		<span><i class="outlined">account_circle</i>{{userName}}</span>
+		<a href @click.prevent="logOut"><i class="small outlined">exit_to_app</i>Salir</a>
 	</a>
 </template>
 
 <script>
 
 import {mapActions,mapState} from 'vuex'
-
 
 export default {
 
@@ -26,12 +25,10 @@ export default {
 	computed:{
 
 		...mapState('auth',{
-
 			isLoggedIn:(state)=>state.status.loggedIn,
-			name:(state) =>state.user.userName
+			userName:(state) =>state.user.userName
+		}),
 
-
-		})
 		// isLoggedIn(){
 		// 	return this.$store.state.auth.status.loggedIn
 		// },
@@ -43,11 +40,20 @@ export default {
 	methods: {
 		...mapActions('auth',['logout']),
 
-		logOut() {
-			this.logout()
+		async logOut() {
+			await this.logout()
 			this.$router.push({name:'Home'})
 		}
+	},
+	mounted() {
+		this.$eventBus.$on('logout', async () => {
+			this.logOut()
+		})
+	},
+	beforeMount() {
+		this.$eventBus.$off('logout')
 	}
+	
 }
 </script>
 

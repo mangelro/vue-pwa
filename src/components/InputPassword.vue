@@ -106,7 +106,6 @@ export default {
 			}
 			// reset insert cursor location
 			e.target.setSelectionRange(index, index)
-			// console.log(this.realText);
 		}
 	},
 	

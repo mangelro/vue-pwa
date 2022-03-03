@@ -51,6 +51,7 @@ import { defineAsyncComponent } from '@vue/runtime-core'
 import DropZone from '../components/DropZone'
 import { justifyModel } from '../models'
 import {DaysBetweenDates, nowUTC} from '@/utils/DateHelper'
+
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',second:'false' }
 export default {
 	components: {
@@ -80,7 +81,6 @@ export default {
 
 	watch: {
 		justifyDate(newValue) {
-			console.log(newValue)
 
 			if (!this._validJustifyDate(newValue)) {
 				this.$refs.beerToast.warning('Solo son válidas las justificaciones de los 10 dias anteriores',{msToHide:1500})

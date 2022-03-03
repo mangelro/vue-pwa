@@ -13,26 +13,13 @@
 // import axios from 'axios'
 // const API_URL = 'http://localhost:41321/v1/auth'
 
-import { ServiceBase } from '@/services/serviceBase'
+import ServiceBase from '@/services/base.service'
+import TokenService from  '@/services/token.service'
+import API_ENDPOINT from '@/services/api.endpoints'
 
 
-const USER_KEY='user'
 
-// eslint-disable-next-line no-unused-vars
 class AuthService extends ServiceBase{
-
-	constructor(){
-		super()
-		// this.client=axios.create({
-		// 	baseURL:API_URL,
-		// 	timeout: 10000,
-		// })
-
-		this.clearUserStorage= ()=>{
-			localStorage.removeItem(USER_KEY)
-			sessionStorage.removeItem(USER_KEY)
-		}
-	}
 
 	/**
 	 * Verifica las credenciales del usuario y guarda el JWT en el almacenamiento local
@@ -40,23 +27,26 @@ class AuthService extends ServiceBase{
 	 * @returns 
 	 */
 	login(login) {
-		return this.client.post('/auth/signin', {
+		return this.client.post(API_ENDPOINT.URL_SIGNIN, {
 			username: login.username,
 			password: login.password,
 			audience: login.audience
 		}).then(response=>{
 		
 			if (response.data.success) {
-				const userStorage = login.rememberMe ? localStorage : sessionStorage
+				const {id,userName,email,accessToken,roles,expires,refreshToken} = response.data
 
-				const {id,userName,email,accessToken,roles} = response.data
+				const loginUser={id,userName,email,roles,accessToken,expires,refreshToken}
+					
+				TokenService.setUser(loginUser,login.rememberMe)
 
-				userStorage.setItem(USER_KEY, JSON.stringify({id,userName,email,roles,accessToken}))
+				return loginUser
 			}
-
-			return response.data.success
+			/*si lanzo una excepción en THEN salta a CATCH */
+			throw (response.data.errorMessage)
+			
 		}).catch(error=>{
-			throw (error.response.data.title)
+			throw (error.response&&error.response.data.title)||error
 		})
 	}
 
@@ -65,7 +55,7 @@ class AuthService extends ServiceBase{
 	 * @returns 
 	 */
 	logout() {
-		return Promise.resolve(this.clearUserStorage())
+		return Promise.resolve(TokenService.removeUser())
 	}
 
 	/**
@@ -74,14 +64,13 @@ class AuthService extends ServiceBase{
 	 * @returns 
 	 */
 	register(user){
-		return this.client.post('/auth/signup', {
+		return this.client.post(API_ENDPOINT.URL_SIGNUP, {
 			username: user.username,
 			email: user.email,
 			password: user.password
 		}).then(response=>{
 			return response.data
 		}).catch(error=>{
-			console.log(error.message)
 			throw(error.message)
 		})
 	}

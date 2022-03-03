@@ -5,10 +5,10 @@
  */
 import { createRouter, createWebHistory } from 'vue-router'
 
+import TokenService from '../services/token.service'
+
 import registro from '../modules/firmas/router'
 import empleados from '../modules/empleados/router'
-import {getUserFromStorage} from '@/services/userStorageHelper'
-//import auth from '../modules/auth/services/auth.service'
 
 const routes = [
 	{
@@ -34,16 +34,17 @@ const routes = [
 	{
 		path: '/register',
 		name: 'Register',
+		
 		component: () => import(/* webpackChunkName: "Register" */ '../views/Register.vue'),
 	},
 	{
 		path: '/registro',
-		meta:{authorization:'*'},
+		meta:{authorization:'enterprise'},
 		...registro,
 	},
 	{
 		path: '/empleados',
-		meta:{authorization:'empleados'},
+		meta:{authorization:'employee'},
 		...empleados,
 
 	},
@@ -79,7 +80,7 @@ const router = createRouter({
 
 router.beforeEach( async to => {
 
-	const userAuthenticated= getUserFromStorage() //Usuario en almacenamiento local
+	const userAuthenticated= TokenService.getUser() //Usuario en almacenamiento local
 	
 	const userRoles=userAuthenticated?.roles??'?' //Si no existe el usuario el rol es ?
 
@@ -95,14 +96,24 @@ router.beforeEach( async to => {
 })
 
 /**
- *  Determina si el usuario posee los roles necesarios para
- * 	acceder a la url
+ *  Determina si el usuario posee los roles necesarios para acceder a la url
+ * 
+ * @param {String,Array} userAuthentication Roles del usuario
+ * @param {String,Array} urlAuthentication  Roles necesario para la url
+ * @returns 
  */
 const canAccess = (userAuthentication,urlAuthentication)=>{
-
-	const userRoles= userAuthentication.split(',') //roles del usuario
-	const urlRoles = urlAuthentication.split(',') //roles requeridos
 	
+	
+	const userRoles=Array.isArray(userAuthentication)
+		? userAuthentication 
+		: userAuthentication.split(',') //roles del usuario
+
+	
+	const urlRoles = Array.isArray(urlAuthentication)
+		? urlAuthentication
+		: urlAuthentication.split(',') //roles requeridos
+
 	
 
 	if (urlRoles.includes('*') && !userRoles.includes('?'))
@@ -111,8 +122,7 @@ const canAccess = (userAuthentication,urlAuthentication)=>{
 	
 	
 	const notFound= userRoles.every(userRol  => {
-		console.log(userRol)	
-		
+	
 		if (urlRoles.includes(userRol))
 			return false
 

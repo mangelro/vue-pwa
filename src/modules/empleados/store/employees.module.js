@@ -6,7 +6,7 @@
  */
 
 import EmployeesService from '../services/employees.service'
-import {getUserFromStorage} from '@/services/userStorageHelper'
+import TokenService from  '@/services/token.service'
 
 
 
@@ -14,6 +14,7 @@ export default {
 	namespaced: true,
 
 	state: () => ({
+		expires:-1,
 		employees: []
 	}),
 
@@ -21,6 +22,7 @@ export default {
 
 		setEmployees(state,employees){
 			state.employees=employees
+			state.expires=new Date().getTime() + (60*1000) //cacheo 1 minuto
 		}
 
 
@@ -28,12 +30,20 @@ export default {
 
 	actions: {
 
-		async loadAllEmployees({commit}){
-			const {id} = getUserFromStorage()
-			const employees = await EmployeesService.getEmployess(id) //TODO: No es correcto. Ha de ser el Id de la empresa
+		async loadAllEmployees({commit,state}){
+					
+			//cacheo 1 minuto
+			if ((state.expires - new Date().getTime()) < 0 ){
+			
+				const {id} = TokenService.getUser()//
 
-			if(employees)
-				commit('setEmployees',[...employees])
+				const employees = await EmployeesService.getEmployees(id) //TODO: No es correcto. Ha de ser el Id de la empresa
+	
+				if(employees)
+					commit('setEmployees',[...employees])
+
+			}
+
 		}
 
 	},
@@ -45,17 +55,38 @@ export default {
 			return [...employees]
 		},
 
-		getEmployeById: (state) =>{
-			/* 	retorna una función para posibilidar el uso de
-				parámetros enlos getters
-			 */
-			return (id = 0) => {
-				const employe = state.employees.find((e) => e.id === id)
 
-				if (!employe) return
+
+
+
+		/* 	retorna una función para posibilidar el uso de
+			parámetros enlos getters
+		 */
+		getEmployeById: (state) => (id = 0) => {
+
+
+			
+			const employee = state.employees.find(e => e.id === id)
 				
-				return { ...employe } //es MUY aconsejable devolver una copia por si se modifica, no modificar el State!!!!!
-			}
+			if (!employee) return {}
+			
+			
+			//return { ...employee } //es MUY aconsejable devolver una copia por si se modifica, no modificar el State!!!!!
+			return employee
 		}
-	}
+	},
+
+
+	// _cachedfunction: (id)=>{
+
+	// 	console.log(this)
+	// 	const employe = this.employees.find(e => e.id === id)
+
+	// 	if (!employe) return {}
+		
+	// 	return { ...employe } //es MUY aconsejable devolver una copia por si se modifica, no modificar el State!!!!!
+
+	// }
+
+
 }

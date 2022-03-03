@@ -64,13 +64,16 @@ export default {
 			required: true,
 		},
 	},
-
+	watch:{
+		id(){
+			this.model.employeeId = this.id
+		}
+	},
 	data: () => ({
-		model: registerModel,
+		model: registerModel
 	}),
 
 	created() {
-		this.model.pin='123'
 		this.model.employeeId = this.id
 	},
 
@@ -88,8 +91,6 @@ export default {
 		},
 
 		async save() {
-			console.log('El PIN',this.model.pin)
-
 			const { isEmpty, data } = this.$refs.signaturePad.saveSignature()
 
 			if (isEmpty || this.model.pin.length === 0) {
@@ -123,7 +124,7 @@ export default {
 	mounted() {
 		// eslint-disable-next-line no-undef
 		this.$nextTick(() => ui())
-	},
+	}
 }
 </script>
 

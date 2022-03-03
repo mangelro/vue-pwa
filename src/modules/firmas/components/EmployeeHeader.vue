@@ -68,9 +68,7 @@ export default {
 
 	methods: {
 		loadEmployee() {
-			const { name, picture, phone, email } = this.getEmployeById(
-				this.employeeId
-			)
+			const { name, picture, phone, email } = this.getEmployeById(this.employeeId)
 
 			this.name = name
 			this.picture = picture

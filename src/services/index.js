@@ -8,8 +8,8 @@ const Plugin = {
 	install(app) {
 		// Initialize API factoies
 		const factories = {
-			signature: new FirmasApi(),
-			auth: new Auth(),
+			signature: FirmasApi,
+			auth: Auth,
 		}
 
 		app.config.globalProperties.$api = factories

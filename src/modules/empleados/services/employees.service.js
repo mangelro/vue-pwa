@@ -4,37 +4,32 @@
  *
  */
 
-//import axios from 'axios'
-import authHeader from '@/services/auth-header'
-import { ServiceBase } from '@/services/serviceBase'
+import ServiceBase from '@/services/base.service'
+import API_ENDPOINT from '@/services/api.endpoints'
 
 
-
-// eslint-disable-next-line no-unused-vars
 class EmployeeService extends ServiceBase {
-	// constructor() {
-	// 	this.client = axios.create({
-	// 		baseURL: API_URL,
-	// 		timeout: 10000,
-	// 	})
-	// }
 
+	constructor(){
+		super()
+		this.setRefreshTokenInterceptor() //intercepta tokens erroneos y envia el de refresco
+	}
+	
 	/**
-	 * Retorna los empleados de una empresa
+	 * Retorna todos los empleados de una empresa
+	 * 
 	 * @param {*} id Identifcador de la empresa
 	 */
-	getEmployess(id){
-		return this.client.get(`/users/${id}?rol=employee`,{headers: authHeader()})
+	getEmployees(id){
+
+		return this.client.get(API_ENDPOINT.URL_USERS(id,'employee'),{headers: this.authHeader()})
 			.then(response=>{
 				return response.data
 			})
-			.catch(error =>{
-				if (error.response.status===401){
-					throw ('No se encuentra autorizado para el recurso')
-				}
-				
-				throw (error.response.statusText)
-			})
+			// .catch(error =>{
+			// 	if (error.response.status!==401)
+			// 		throw (error.message)
+			// })
 	}
 }
 

@@ -2,10 +2,10 @@
  * 
  * 
  */
-import {getUserFromStorage} from '@/services/userStorageHelper'
+import TokenService from  '@/services/token.service'
 import AuthService from '../services/auth.service'
  
-const user = getUserFromStorage()
+const user = TokenService.getUser()
  
 const initialState = user
 	? { status: { loggedIn: true }, user }
@@ -14,7 +14,7 @@ const initialState = user
 export default {
 	namespaced: true,
 
-	state: ()=>({...initialState}), //MUCHO OJO se puede asignar directamente
+	state:initialState, 
 
 	mutations: {
 		loginSuccess(state,user){
@@ -49,10 +49,13 @@ export default {
 				const user = await AuthService.login(login)
 		
 				commit('loginSuccess', user)
+				
 				return Promise.resolve(user)
 			}
 			catch(error)
 			{
+				console.error(error)
+				
 				commit('loginFailure')
 				return Promise.reject(error)
 			}

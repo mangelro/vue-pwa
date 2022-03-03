@@ -122,7 +122,6 @@ export default {
 		},
 
 		verifyPass(){
-			console.log(this.model.password,this.newPass)
 			return this.model.password===this.newPass
 		}
 

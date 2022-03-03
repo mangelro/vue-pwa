@@ -29,7 +29,6 @@ export default {
 
 	methods: {
 		onError(error){
-			console.log(error)
 			this.$refs.beerToast.error(error)
 		}
 	},

@@ -3,7 +3,6 @@ export const registerModel={
 	employeeId:'',
 	date:'',
 	pin:'',
-
 	signature:'',
 	observations:'',
 	location:null
@@ -13,7 +12,6 @@ export const justifyModel={
 	employeeId:'',
 	date:'',
 	pin:'',
-
 	justify:'',
 }
 
