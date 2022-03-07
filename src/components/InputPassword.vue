@@ -1,4 +1,3 @@
-import ListBase from '@/components/base/ListBase';
 <template>
 	<input 
 		type="text"
@@ -109,10 +108,10 @@ export default {
 		}
 	},
 	
-	mounted() {
-		// eslint-disable-next-line no-undef
-		this.$nextTick(() => ui())
-	},
+	// mounted() {
+	// 	// eslint-disable-next-line no-undef
+	// 	ui()
+	// },
 	
 }
 </script>

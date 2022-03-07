@@ -5,7 +5,8 @@
 import * as components from './components/components'
 
 
-const install = (app) => {
+// eslint-disable-next-line no-unused-vars
+const install = (app,options={}) => {
 	Object.entries(components).forEach(([componentName, component]) => {
 		app.component(componentName, component)
 	})

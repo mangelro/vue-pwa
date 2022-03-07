@@ -18,4 +18,10 @@ createApp(App)
 	.use(VueSignaturePad)
 	.use(Components)
 	.use(eventBus)
+	// .directive('beer',{
+	// 	mounted() {
+	// 		// eslint-disable-next-line no-undef
+	// 		ui()
+	// 	}
+	// })
 	.mount('#app')

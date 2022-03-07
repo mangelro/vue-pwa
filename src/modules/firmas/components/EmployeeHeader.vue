@@ -81,10 +81,10 @@ export default {
 		this.loadEmployee()
 	},
 
-	mounted() {
-		// eslint-disable-next-line no-undef
-		this.$nextTick(() => ui())
-	},
+	// mounted() {
+	// 	// eslint-disable-next-line no-undef
+	// 	this.$nextTick(() => ui())
+	// },
 }
 </script>
 

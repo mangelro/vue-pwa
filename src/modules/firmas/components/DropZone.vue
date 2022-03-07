@@ -63,7 +63,7 @@ export default {
 			url: this.innerUrl,
 			method: 'put',
 
-			paramName: this._trickParamName, // The name that will be used to transfer the file
+			paramName: this.trickParamName, // The name that will be used to transfer the file
 
 			previewsContainer: '.previews', // Defines where to display the file previews
 
@@ -95,28 +95,22 @@ export default {
 
 	emits: ['uploadingCompleted', 'fileAdded', 'preProcessQueue'],
 
+	expose:['setUrl','processQueue','clearQueue'], //Define métodos públicos
+
 	methods: {
 		/**
 		 *  Pequeño truco para evitar que le añada [n] a los parámetros con el
 		 *  nombre de los ficheros en subidas multiples
 		 */
-		_trickParamName() {
+		trickParamName() {
 			return this.maxFiles > 1 ? 'files' : 'file'
 		},
 
 		/**
 		 * Verifica que la url es un ruta absoluta
 		 */
-		_throwIfNotAbsoluteUrl(url) {
+		throwIfNotAbsoluteUrl(url) {
 			if (isAbsoluteUrl(url)) throw `Url no válida ${url}`
-		},
-
-		/**
-		 * Establece una nueva url para el envío de ficheros.
-		 */
-		setUrl(url) {
-			this._throwIfNotAbsoluteUrl(url)
-			this.innerUrl = url
 		},
 
 		onFileAdded(file) {
@@ -130,6 +124,7 @@ export default {
 			console.log('File removed', file.name)
 		},
 
+
 		/**
 		 * Evento que se proudce por cada uno de los ficheros procesados
 		 */
@@ -137,6 +132,14 @@ export default {
 			console.log('File Uploading Completed', file)
 			this.$emit('uploadingCompleted', file)
 			setTimeout(() => this.myDropzone.removeFile(file), 5000)
+		},
+
+		/**
+		 * Establece una nueva url para el envío de ficheros.
+		 */
+		setUrl(url) {
+			this.throwIfNotAbsoluteUrl(url)
+			this.innerUrl = url
 		},
 
 		/**

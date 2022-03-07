@@ -24,7 +24,7 @@
 
 		<div class="col s12">
 			<div class="field label border">
-				<input-password v-model="model.pin" maxlength="4" ></input-password>
+				<input-password v-model="model.pin" maxlength="4"></input-password>
 				<label>PIN</label>
 			</div>
 		</div>
@@ -32,7 +32,6 @@
 
 	<nav>
 		<button @click="save">Firmar</button>
-		<!-- <button @click="undo">Undo</button> -->
 		<button @click="clear">Clear</button>
 	</nav>
 
@@ -64,11 +63,13 @@ export default {
 			required: true,
 		},
 	},
+	
 	watch:{
 		id(){
 			this.model.employeeId = this.id
 		}
 	},
+
 	data: () => ({
 		model: registerModel
 	}),
@@ -123,7 +124,7 @@ export default {
 
 	mounted() {
 		// eslint-disable-next-line no-undef
-		this.$nextTick(() => ui())
+		this.$nextTick(()=>ui())
 	}
 }
 </script>

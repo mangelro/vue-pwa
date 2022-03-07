@@ -37,6 +37,8 @@ export default {
 		// }
 	},
 
+	inject:['eventBus'], //eventBus install
+
 	methods: {
 		...mapActions('auth',['logout']),
 
@@ -46,12 +48,12 @@ export default {
 		}
 	},
 	mounted() {
-		this.$eventBus.$on('logout', async () => {
+		this.eventBus.$on('logout', async () => {
 			this.logOut()
 		})
 	},
-	beforeMount() {
-		this.$eventBus.$off('logout')
+	beforeUnmount() {
+		this.eventBus.$off('logout')
 	}
 	
 }

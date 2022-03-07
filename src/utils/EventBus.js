@@ -40,16 +40,18 @@ class Event {
 	}
 }
 
-const eventBus = new Event()
+const eventBusInstance = new Event()
 
-eventBus.install = (app) => {
+// eslint-disable-next-line no-unused-vars
+eventBusInstance.install = (app,options={}) => {
 
-	app.config.globalProperties.$eventBus = eventBus
+	app.config.globalProperties.$eventBus = eventBusInstance
 
 	//const key=Symbol('eventBus')
 	const key = 'eventBus'
-	app.provide(key, eventBus)
+	app.provide(key, eventBusInstance)
+
 }
 
 //De esta manera se define un Singleton
-export default eventBus
+export default eventBusInstance

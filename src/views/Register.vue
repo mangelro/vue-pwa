@@ -32,5 +32,9 @@ export default {
 			this.$refs.beerToast.error(error)
 		}
 	},
+// 	mounted(){
+// 		// eslint-disable-next-line no-undef
+// 		ui()
+// 	}
 }
 </script>

@@ -1,6 +1,6 @@
 /**
  * Retorna la posición actual
- * @param {*} options
+ * @param {Object} options
  * 	{
  * 		enableHighAccuracy: Boolean
  * 		timeout: Number

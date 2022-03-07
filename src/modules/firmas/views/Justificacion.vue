@@ -52,7 +52,7 @@ import DropZone from '../components/DropZone'
 import { justifyModel } from '../models'
 import {DaysBetweenDates, nowUTC} from '@/utils/DateHelper'
 
-const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',second:'false' }
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
 export default {
 	components: {
 		EmployeeHeader: defineAsyncComponent(() =>
@@ -133,7 +133,7 @@ export default {
 
 	mounted(){
 		// eslint-disable-next-line no-undef
-		if (!window.ui) this.$nextTick(() => ui())
+		this.$nextTick(()=>ui())
 	}
 }
 </script>
