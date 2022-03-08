@@ -9,6 +9,14 @@ export default defineComponent({
 	data:()=>({
 		showLoading:true
 	}),
+	
+	expose:['showLoader'],
+
+	methods:{
+		showLoader(){
+			console.log('muestra')
+		}
+	},
 
 	mounted(){
 		setInterval(()=>{this.showLoading=false},1500)

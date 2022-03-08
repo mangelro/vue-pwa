@@ -30,7 +30,8 @@ class AuthService extends ServiceBase{
 		return this.client.post(API_ENDPOINT.URL_SIGNIN, {
 			username: login.username,
 			password: login.password,
-			audience: login.audience
+			audience: login.audience,
+			when:login.when
 		}).then(response=>{
 		
 			if (response.data.success) {
@@ -77,4 +78,6 @@ class AuthService extends ServiceBase{
 
 }
 
-export default new AuthService() //Crea un singleton???
+const AuthServiceInstance = new AuthService()
+
+export default AuthServiceInstance //Crea un singleton???

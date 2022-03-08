@@ -1,42 +1,62 @@
+import { nextTick } from '@vue/runtime-core';
 <template>
 	<input 
 		type="text" 
 		:id="id"
-		@keypress="handleKeyPress"
+		@keypress="onHandleKeyPress"
 		ref="theInput"
 		:value="value"
 		@input="onInput"
 	>
 </template>
 <script>
-export default {
 
+
+// const delayer = (timeout) => new Promise(resolve =>{
+// 	setTimeout(()=>resolve('ok'),timeout)
+// })
+
+
+
+
+
+export default {
 
 	props: {
 		id:{
 			type:String,
 			required:false,
-			default:'_myBarcodeReader'
+			default:() =>  {
+				return '_myBarcodeReader_' + Math.ceil(performance.now(),0)
+			}
 		},
 
 		modelValue:{
 			type:String,
 			default:''
+		},
+
+		options:{
+			type:Object,
+			required:false,
+			default:()=>({
+				autoDel:true,
+				minChars:4
+			})
 		}
 	},
 
-	emits: ['update:modelValue','codeReader'],
+
+
+	emits: ['update:modelValue','codeReaded'],
 
 	data(){
 		return{
 		
-			value:this.modelValue,
-
-			options:{
-				autoDel:true,
-				minChars:3
-			},
-
+			/*
+			 * No se inicializa con this.modelValue ya que no me interesa un valor. Es un component
+			 * de solo lecura*/
+			value:'',
 			inputStart:null,
 			inputStop:null,
 			firstKey:null,
@@ -55,12 +75,18 @@ export default {
 
 	methods:{
 
+		/**
+		 * Evento cuando se modifica el textbox
+		 */
 		onInput(event){
 			this.value = event.target.value
 			this.$emit('update:modelValue', this.value)
 		},
 
-		handleKeyPress(event){
+		/**
+		 * Evento cuando se presiona una tecla en el textbox
+		 */
+		onHandleKeyPress(event){
 
 			// restart the timer
 			if (this.timing) {
@@ -69,7 +95,7 @@ export default {
 
 			
 			// handle the key event
-			if (event.which == 13) {
+			if (event.which === 13) {
 				// Enter key was entered
 				
 				// don't submit the form
@@ -95,7 +121,7 @@ export default {
 					this.firstKey = event.which
 					this.inputStart = this.inputStop
 					// watch for a loss of focus
-					this.$refs.theInput.addEventListener('blur',this.inputBlur)
+					this.$refs.theInput.addEventListener('blur',this.onInputBlur)
 					//$("body").on("blur", self._selector, this.inputBlur)
 				}
 				
@@ -104,7 +130,10 @@ export default {
 			}
 		},
 
-		inputBlur(){
+		/**
+		 * Evento cuando el textbox pierde el foco
+		 */
+		onInputBlur(){
 			clearTimeout(this.timing)
             
 			if (this.value.length >= this.options.minChars) {
@@ -113,12 +142,15 @@ export default {
 			}
 		},
 
+		/**
+		 * 
+		 */
 		inputTimeoutHandler() {
 			// stop listening for a timer event
 			clearTimeout(this.timing)
 			
 			// if the value is being entered manually and hasn't finished being entered
-			if (!this.isUserFinishedEntering() || this.value.length < 3) {
+			if (!this.isUserFinishedEntering() || this.value.length < this.options.minChars) {
 				// keep waiting for input
 				return
 			}
@@ -127,24 +159,26 @@ export default {
 			}
 		},
 
+		/**
+		 * 
+		 */
 		inputComplete() {
 
 			// stop listening for the input to lose focus
-			this.$refs.theInput.removeEventListener('blur',this.inputBlur)
-			//$("body").off("blur", self._selector, this.inputBlur)
+			this.$refs.theInput.removeEventListener('blur',this.onInputBlur)
+
 
 			// report the results
-			//$(self._selector).focus().select()
 			this.$refs.theInput.focus({preventScroll:true})
 			this.$refs.theInput.select()
 
-
-			//this.onInputComplete(this.value)
-			this.$emit('codeReader',this.value)
+			this.$emit('codeReaded',{id:this.id, code:this.value})
 
 			this.resetValues()
 		},
-		
+		/**
+		 * 
+		 */
 		resetValues() {
 			// clear the variables
 			this.inputStart = null
@@ -164,10 +198,14 @@ export default {
 			return !this.isScannerInput() && this.userFinishedEntering
 		},
 
-		// Assume that it is from the scanner if it was entered really fast
+		/**
+		 * Asume que se está utilizando scanner si es realmente rápido
+		 * 
+		 */
 		isScannerInput() {
 			return (((this.inputStop - this.inputStart) / this.value.length) < 15)
-		}
+		} 
+
 
 	},
 }

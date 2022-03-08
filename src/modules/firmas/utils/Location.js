@@ -18,12 +18,14 @@ const defaultOptions = {
 }
 
 export const getCurrentPosition = (options) => {
+
+	const newOptions = {
+		...defaultOptions,
+		...options,
+	}
+
 	
 	return new Promise((resolve, reject) => {
-		const newOptions = {
-			...defaultOptions,
-			...options,
-		}
 
 		const supported = typeof window !== 'undefined' && navigator && 'geolocation' in navigator
 

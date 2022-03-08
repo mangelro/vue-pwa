@@ -4,17 +4,17 @@
 
 		<div class="col s12 m6">
 			<div class="field label border">
-				<input-date v-model="iniPeriodo" />
+				<input-date v-model="model.iniPeriodo" />
 				<label class="active">Fecha inicio periodo</label>
-				<em>{{ toDateStringIni }}</em>
+				<div class="tooltip">{{ toDateStringIni }}</div>
 			</div>
 		</div>
 
 		<div class="col s12 m6">
 			<div class="field label border">
-				<input-date v-model="finPeriodo" />
+				<input-date v-model="model.endPeriodo" />
 				<label class="active">Fecha fin periodo</label>
-				<em>{{ toDateStringFin }}</em>
+				<div class="tooltip">{{ toDateStringFin }}</div>
 			</div>
 		</div>
 
@@ -28,7 +28,7 @@
 
 		<div class="col s12 m10">
 			<div class="field label suffix border">
-				<select v-model="tipoPeriodo">
+				<select v-model="model.tipoPeriodo">
 					<option
 						v-for="(permiso, index) in permisos"
 						:key="index"
@@ -44,14 +44,14 @@
 	</div>
 	<nav>
 		<button @click="save">Registrar</button>
-		<!-- <button @click="undo">Undo</button> -->
 		<button @click="clear">Clear</button>
 	</nav>
 </template>
 
 <script>
 import { PERIODOS } from '../utils/Periodos'
-import { DaysBetweenDates } from '@/utils/DateHelper'
+import { DaysBetweenDates, nowUTC } from '@/utils/DateHelper'
+import {vacacionesModel} from '../models'
 
 const options = {
 	weekday: 'long',
@@ -69,35 +69,37 @@ export default {
 	},
 
 	data: () => ({
-		iniPeriodo: new Date(),
-		finPeriodo: new Date(),
-		tipoPeriodo: '',
+		model:vacacionesModel,
 		permisos: PERIODOS,
 	}),
 	computed: {
 		diasPeriodo() {
-			const days = DaysBetweenDates(this.iniPeriodo, this.finPeriodo)
+			const days = DaysBetweenDates(this.model.iniPeriodo, this.model.endPeriodo)
 			return days + (days===1? ' día': ' días')
 		},
 		toDateStringIni() {
-			return this.iniPeriodo.toLocaleDateString('es-ES', options)
+			return this.model.iniPeriodo.toLocaleDateString('es-ES', options)
 		},
 		toDateStringFin() {
-			return this.finPeriodo.toLocaleDateString('es-ES', options)
+			return this.model.endPeriodo.toLocaleDateString('es-ES', options)
 		},
 	},
 
 	methods: {
+		save(){
+			console.log(this.model.iniPeriodo.toISOString())
+		},
+
 		clear() {
-			this.iniPeriodo = new Date()
-			this.finPeriodo = new Date()
+			this.model.iniPeriodo = nowUTC()
+			this.model.endPeriodo = nowUTC()
 		},
 	},
 
-	// mounted() {
-	// 	// eslint-disable-next-line no-undef
-	// 	this.$nextTick(() => ui())
-	// },
+	mounted() {
+		// eslint-disable-next-line no-undef
+		this.$nextTick(()=>ui())
+	},
 }
 </script>
 

@@ -37,7 +37,7 @@ export default {
 		// }
 	},
 
-	inject:['eventBus'], //eventBus install
+	inject:['eventBus'], //eventBus DI
 
 	methods: {
 		...mapActions('auth',['logout']),

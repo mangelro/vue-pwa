@@ -7,9 +7,9 @@
 export const PERIODOS = Object.freeze({
 	VACACIONES:{text:'Vacaciones',value:'VACACIONES'} ,
 	FINSEMANA: {text:'Por fin de samana o festivo',value:'FINSEMANA'} ,
-	MUDANZA: {text:'Por mudanza',value:'MUDANZA'},
-	HOSPITALIZACION: {text:'Por hospitalización familiar',value:'HOSPITALIZACION'},
-	BODA: {text:'Por boda',value:'BODA'},
-	NACIMIENTO: {text:'Por nacimiendo o adopción',value:'NACIMIENTO'},
-	ASUNTOSPROPIOS: {text:'Por asuntos propios',value:'ASUNTOSPROPIOS'},
+	MUDANZA: {text:'Mudanza',value:'MUDANZA'},
+	HOSPITALIZACION: {text:'Hospitalización familiar',value:'HOSPITALIZACION'},
+	BODA: {text:'Boda',value:'BODA'},
+	NACIMIENTO: {text:'Nacimiendo o adopción',value:'NACIMIENTO'},
+	ASUNTOSPROPIOS: {text:'Asuntos propios',value:'ASUNTOSPROPIOS'},
 })

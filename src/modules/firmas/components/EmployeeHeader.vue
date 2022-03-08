@@ -9,8 +9,7 @@
 
 				<button
 					data-ui="#dropdown1_"
-					class="circle mail-settings"
-					v-if="showOptions">
+					class="circle mail-settings">
 					<i>settings</i>
 					<div
 						id="dropdown1_"

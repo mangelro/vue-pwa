@@ -47,8 +47,8 @@ eventBusInstance.install = (app,options={}) => {
 
 	app.config.globalProperties.$eventBus = eventBusInstance
 
-	//const key=Symbol('eventBus')
 	const key = 'eventBus'
+
 	app.provide(key, eventBusInstance)
 
 }

@@ -22,16 +22,23 @@ export  default class ServiceBase {
 				'accept': 'application/json',
 				'x-develop':'FdO'
 			}
+			//,
+			// transformRequest: [
+			// 	// eslint-disable-next-line no-unused-vars
+			// 	(data,header) => {
+			// 		// modify data here
+			// 		console.log('transformRequest',data)
+			// 		//return data
+			// 	}
+			// ]
 		})
 
-		this.setRefreshTokenInterceptor()
+		
 	}
 
 	/**
-
-	/**
 	 * Retorna la cabecera de autheticacion
-	 * @returns Cabecera de Authenticacion
+	 * @returns Cabecera de Authenticacion Bearer
 	 */
 	authHeader(){
 		const accessToken = TokenService.getLocalAccessToken()
@@ -44,14 +51,14 @@ export  default class ServiceBase {
 		}
 	}
 
-
 	/**
 	 * Establece la captura de peticiones para establecer token de acceso
-	 * @param {Axios} client Instacia del Axios
+	 *
 	 */
 	setAccessTokenInterceptor(){
 		this.client.interceptors.request.use(
 			(config) => {
+
 				const token = TokenService.getLocalAccessToken()
 
 				if (token) {
@@ -69,15 +76,14 @@ export  default class ServiceBase {
 	/**
 	 * Establece la captura de respuesta denegadas para establecer token de refresco
 	 */
-	setRefreshTokenInterceptor(client){
+	useRefreshToken(){
 		this.client.interceptors.response.use(
 			(res) => {
 				return res
 			},
 			async (err) => {
 				const originalConfig = err.config
-
-				console.log(originalConfig)
+				const originalCLient = this.client
 
 				if (originalConfig.url !== API_ENDPOINT.URL_SIGNIN && err.response) {
 
@@ -86,7 +92,7 @@ export  default class ServiceBase {
 						originalConfig._retry = true
 						try {
 
-							const rs = await this.client.post(API_ENDPOINT.URL_REFRESH, {
+							const rs = await originalCLient.post(API_ENDPOINT.URL_REFRESH, {
 								accessToken: TokenService.getLocalAccessToken(), //No es necesario
 								refreshToken: TokenService.getLocalRefreshToken()
 							})
@@ -98,7 +104,7 @@ export  default class ServiceBase {
 
 							originalConfig.headers.Authorization='Bearer ' + accessToken
 
-							return client(originalConfig)
+							return originalCLient(originalConfig)
 
 						} catch (_error) {
 							return Promise.reject(_error)

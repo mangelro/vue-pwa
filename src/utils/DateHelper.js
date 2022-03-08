@@ -19,7 +19,7 @@ export const DaysBetweenDates = (ini,fin) => {
 }
 
 /**
- *
+ * Devuele la fecha y hora actual en UTC
  * @returns
  */
 export const nowUTC = () => {
@@ -37,7 +37,7 @@ export const nowUTC = () => {
 	]
 	//const c= [now.getFullYear(),now.getMonth(),now.getDate(),now.getHours(),now.getMinutes(),now.getSeconds()]
 
-	//console.log(c)
+	//console.log(new Date(...c).toISOString())
 
-	return new Date(...c)
+	return new Date(Date.UTC(...c))
 }

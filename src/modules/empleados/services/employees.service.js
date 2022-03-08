@@ -12,7 +12,7 @@ class EmployeeService extends ServiceBase {
 
 	constructor(){
 		super()
-		this.setRefreshTokenInterceptor() //intercepta tokens erroneos y envia el de refresco
+		this.useRefreshToken() //intercepta tokens erroneos y envia el de refresco
 	}
 	
 	/**

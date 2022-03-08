@@ -9,4 +9,10 @@
 
 ## PWA
 
+## Directivas (v-xxx)
+
+
+
+
+
 ## Update de ficheros

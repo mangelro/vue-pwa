@@ -24,8 +24,10 @@ export default defineComponent({
 		},
 	}),
 
+	expose:['done','error','info','warning'],
+
 	methods: {
-		_show(message, options = {}) {
+		show(message, options = {}) {
 			
 			const localOptions = {
 				...this.options,
@@ -41,7 +43,7 @@ export default defineComponent({
 			this.$nextTick(()=>ui(`#${this.id}`, localOptions.msToHide))
 		},
 
-		_configureClass(options){
+		configureClass(options){
 			this.classToast.pink = options.type === TYPES.ERROR
 			this.classToast.orange = options.type === TYPES.WARNING
 			this.classToast.green = options.type === TYPES.DONE
@@ -51,22 +53,22 @@ export default defineComponent({
 
 		done(message, options = {}) {
 			options.type = TYPES.DONE
-			return this._show(message, options)
+			return this.show(message, options)
 		},
 
 		error(message, options = {}) {
 			options.type = TYPES.ERROR
-			return this._show(message, options)
+			return this.show(message, options)
 		},
 
 		info(message, options = {}) {
 			options.type = TYPES.INFO
-			return this._show(message, options)
+			return this.show(message, options)
 		},
 
 		warning(message, options = {}) {
 			options.type = TYPES.WARNING
-			return this._show(message, options)
+			return this.show(message, options)
 		},
 	},
 

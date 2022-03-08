@@ -9,4 +9,5 @@ import InputPassword from './InputPassword.vue'
 import InputDate from './InputDate.vue'
 import InputBarcode from './InputBarcode.vue'
 
+
 export {BeerToast,BeerLoader,InputPassword,InputDate,InputBarcode}

@@ -10,7 +10,7 @@
 			<div class="field label border">
 				<input-date v-model="justifyDate" />
 				<label class="active">Fecha justificación</label>
-				<em>{{toDateString}} (Máx. 10 días)</em>
+				<div class="tooltip">{{ toDateString }} (Máx. 10 días)</div>
 			</div>
 		</div>
 
