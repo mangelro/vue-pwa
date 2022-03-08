@@ -1,3 +1,4 @@
+import createPersistedState from 'vuex-persistedstate'
 import { createStore } from 'vuex'
 
 import employees from '../modules/empleados/store/employees.module'
@@ -11,4 +12,5 @@ export default createStore({
 		employees,
 		signatures,
 	},
+	plugins: [createPersistedState()]
 })

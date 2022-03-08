@@ -5,9 +5,9 @@
  * 
  */
 
+
 import EmployeesService from '../services/employees.service'
 import TokenService from  '@/services/token.service'
-
 
 
 export default {
@@ -75,18 +75,6 @@ export default {
 			return employee
 		}
 	},
-
-
-	// _cachedfunction: (id)=>{
-
-	// 	console.log(this)
-	// 	const employe = this.employees.find(e => e.id === id)
-
-	// 	if (!employe) return {}
-		
-	// 	return { ...employe } //es MUY aconsejable devolver una copia por si se modifica, no modificar el State!!!!!
-
-	// }
 
 
 }
