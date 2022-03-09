@@ -1,22 +1,28 @@
-import { createApp } from 'vue'
+/**
+ * 
+ * 
+ * 
+ * 
+ */
+
+import Apis from './services/'
 import App from './App.vue'
-import router from './router'
-
-import VueSignaturePad from 'vue-signature-pad'
 import Components from './entry'
-
-import eventBus from './utils/EventBus'
-
+import {createApp} from 'vue'
+import eventBus from './utils/eventBus'
+import router from './router'
 import store from './store'
+import VueSignaturePad from 'vue-signature-pad'
 
-import './registerServiceWorker'
 import './assets/dropzone.css'
+import './registerServiceWorker'
 
 createApp(App)
 	.use(store)
 	.use(router)
 	.use(VueSignaturePad)
 	.use(Components)
+	.use(Apis)
 	.use(eventBus)
 	.directive('lazy-img',{
 		// eslint-disable-next-line no-unused-vars
@@ -32,7 +38,7 @@ createApp(App)
 
 				if (isVisible){
 
-					const downloadingImage  =new Image()
+					const downloadingImage=new Image()
 					downloadingImage .onload=function(){
 						thisElement.src=this.src
 					}

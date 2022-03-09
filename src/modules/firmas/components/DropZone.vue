@@ -14,10 +14,9 @@
 </template>
 
 <script>
-
 import Dropzone from 'dropzone'
+import {isAbsoluteUrl} from '@/utils/urlHelper'
 import msg from '../utils/DropZoneMsg'
-import { isAbsoluteUrl } from '../utils/UrlHelper'
 
 Dropzone.autoDiscover = false
 
@@ -38,6 +37,7 @@ export default {
 		acceptedFiles: {
 			type: String,
 			requred: false,
+			//default:'*/*'
 		},
 	},
 
@@ -49,18 +49,9 @@ export default {
 		}
 	},
 
-	watch: {
-		innerUrl(newValue) {
-			if (!this.myDropzone) return
-
-			this._throwIfNotAbsoluteUrl(newValue)
-			this.myDropzone.options.url = newValue
-		},
-	},
-
 	mounted() {
 		this.myDropzone = new Dropzone('#dropzone', {
-			url: this.innerUrl,
+			
 			method: 'put',
 
 			paramName: this.trickParamName, // The name that will be used to transfer the file
@@ -80,6 +71,7 @@ export default {
 			// acceptedFiles: "image/*",
 
 			acceptedFiles: this.acceptedFiles,
+
 			autoProcessQueue: false, //se necesita llamar explicitamente a .processQueue() para subir los ficheros.)
 
 			//headers:{'x-api-version':'1.0'},
@@ -95,7 +87,7 @@ export default {
 
 	emits: ['uploadingCompleted', 'fileAdded', 'preProcessQueue'],
 
-	expose:['setUrl','processQueue','clearQueue'], //Define métodos públicos
+	expose:['processQueue','clearQueue'], //Define métodos públicos
 
 	methods: {
 		/**
@@ -110,9 +102,12 @@ export default {
 		 * Verifica que la url es un ruta absoluta
 		 */
 		throwIfNotAbsoluteUrl(url) {
-			if (isAbsoluteUrl(url)) throw `Url no válida ${url}`
+			if (!isAbsoluteUrl(url)) throw `Url no válida ${url}`
 		},
 
+		/**
+		 * 
+		 */
 		onFileAdded(file) {
 			// file.previewElement.addEventListener("click", () => {
 			//   this.myDropzone.removeFile(file)
@@ -120,13 +115,16 @@ export default {
 			this.$emit('fileAdded', file)
 		},
 
+		/**
+		 * 
+		 */
 		onRemovedFile(file) {
 			console.log('File removed', file.name)
 		},
 
 
-		/**
-		 * Evento que se proudce por cada uno de los ficheros procesados
+		/**	
+		 * Evento que se produce por cada uno de los ficheros procesados
 		 */
 		onCompleted(file) {
 			console.log('File Uploading Completed', file)
@@ -134,25 +132,23 @@ export default {
 			setTimeout(() => this.myDropzone.removeFile(file), 5000)
 		},
 
-		/**
-		 * Establece una nueva url para el envío de ficheros.
-		 */
-		setUrl(url) {
-			this.throwIfNotAbsoluteUrl(url)
-			this.innerUrl = url
-		},
 
 		/**
+		 * @param {String} Diracción opcional para el envio de la cola de ficheros
 		 * Procesa la cola de ficheros
+		 * 
 		 */
-		processQueue() {
-			console.log('Pre-Process Queue', this.myDropzone)
+		processQueue(url) {
+			//console.log('Pre-Process Queue', this.myDropzone)
+			
+			if (url){
+				this.throwIfNotAbsoluteUrl(url)
+				this.myDropzone.options.url = url
+			}
 			this.filesToProcess = this.myDropzone.files
+			
 			this.$emit('preProcessQueue', this.myDropzone.files)
-
-			console.log('Process Queue', this.myDropzone)
-
-			this.$nextTick(() => this.myDropzone.processQueue())
+			this.myDropzone.processQueue()
 		},
 
 		/**

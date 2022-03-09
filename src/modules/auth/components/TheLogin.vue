@@ -36,13 +36,12 @@
 					</div>
 				</div>
 			</div>
-
-			<nav>
-				<div class="row">
-					<div class="col s12 m6"><button @click="authUser" class="responsive">Acceso</button></div>
-					<div class="col s12 m6"><a href="javascript:void(0)" class="responsive">Recordar contraseña</a></div>
-				</div>
-			</nav>
+			
+			<div class="row">
+				<div class="col s12 m6"><button @click="authUser" class="responsive">Acceso</button></div>
+				<div class="col s12 m6"><a href="javascript:void(0)" class="responsive">Recordar contraseña</a></div>
+			</div>
+			
 		</div>
 	</article>
 

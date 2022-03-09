@@ -56,7 +56,10 @@ export default {
 	}),
 
 	computed: {
+
 		...mapGetters('employees', ['getEmployeById']),
+
+		
 	},
 
 	watch: {
@@ -80,10 +83,10 @@ export default {
 		this.loadEmployee()
 	},
 
-	// mounted() {
-	// 	// eslint-disable-next-line no-undef
-	// 	this.$nextTick(() => ui())
-	// },
+	mounted() {
+		// eslint-disable-next-line no-undef
+		this.$nextTick(() => ui())
+	},
 }
 </script>
 

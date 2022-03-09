@@ -1,6 +1,6 @@
 <template>
 	<div id="nav" class="menu top">
-		<img src="favicon.ico" class="circle small-margin" />
+		<img src="/favicon.ico" class="circle small-margin" />
 
 		<router-link
 			:to="{ name: 'Home' }"

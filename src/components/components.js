@@ -3,11 +3,10 @@
  * la App
  */
 
-import BeerToast from './BeerToast.vue'
 import BeerLoader from './BeerLoader.vue'
-import InputPassword from './InputPassword.vue'
-import InputDate from './InputDate.vue'
+import BeerToast from './BeerToast.vue'
 import InputBarcode from './InputBarcode.vue'
-
+import InputDate from './InputDate.vue'
+import InputPassword from './InputPassword.vue'
 
 export {BeerToast,BeerLoader,InputPassword,InputDate,InputBarcode}

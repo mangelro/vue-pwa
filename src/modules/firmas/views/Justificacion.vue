@@ -34,25 +34,22 @@
 		</div>
 
 	</div>
-
 	<nav>
 		<button @click="save">Justificar</button>
 		<button @click="clear">Clear</button>
 	</nav>
-
-
 	<Teleport to="body">
 		<beer-toast id="toastJustificacion" ref="beerToast"></beer-toast>
 	</Teleport>
 </template>
 
 <script>
-import { defineAsyncComponent } from '@vue/runtime-core'
-import DropZone from '../components/DropZone'
-import { justifyModel } from '../models'
-import {DaysBetweenDates, nowUTC} from '@/utils/DateHelper'
 
-const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
+import * as DateUtils from '@/utils/dateHelper'
+import {defineAsyncComponent} from '@vue/runtime-core'
+import DropZone from '../components/DropZone'
+import {justifyModel} from '../models'
+
 export default {
 	components: {
 		EmployeeHeader: defineAsyncComponent(() =>
@@ -75,19 +72,19 @@ export default {
 
 	computed:{
 		toDateString(){
-			return this.justifyDate.toLocaleDateString('es-ES',options)
+			return DateUtils.toDateTimeString(this.justifyDate,{hour:null,minute:null})
 		}
 	},
 
 	watch: {
 		justifyDate(newValue) {
 
-			if (!this._validJustifyDate(newValue)) {
+			if (!this.validJustifyDate(newValue)) {
 				this.$refs.beerToast.warning('Solo son válidas las justificaciones de los 10 dias anteriores',{msToHide:1500})
-				this.justifyDate = new nowUTC()
+				this.justifyDate = DateUtils.nowUTC()
 
 			} else {
-				this.model.date = newValue.toISOString()
+				this.model.date = newValue
 			}
 		},
 	},
@@ -99,35 +96,37 @@ export default {
 
 	methods: {
 		/**
-		 * Solo son validas las justificaciones de los 10 dias anteriores
+		 * Solo son válidas las justificaciones de los 10 dias anteriores
 		 */
-		_validJustifyDate(justifyDate) {
-			const days = DaysBetweenDates(justifyDate,new Date())
+		validJustifyDate(justifyDate) {
+			const days = DateUtils.daysBetweenDates(justifyDate,DateUtils.nowUTC())
 			return days > 0 && days < 10
 		},
 
 		async save() {
+
 			if (this.model.pin.length === 0 || this.model.justify.length===0) {
 				this.$refs.beerToast.warning('Faltan algunos datos obligatorios',{msToHide:2000})
 				return
 			}
 
 			try {
-				const { contentUrl } = await this.$api.signature.postJustificacion(this.model)
+				const { contentUrl } = await this.$api.signature.registroJustificacion(this.model)
+				
+				this.$refs.mydropzone.processQueue(contentUrl)
 
-				this.$refs.mydropzone.setUrl(contentUrl)
-				this.$refs.mydropzone.processQueue()
 				this.clear()
+
 			} catch (err) {
-				this.$refs.beerToast.error(err,{msToHide:2000})
+				this.$refs.beerToast.error(err,{msToHide:12000})
 			}
 		},
 
 		clear() {
-			this.$refs.mydropzone.clearQueue()
+			//this.$refs.mydropzone.clearQueue()
 			this.model.pin = ''
 			this.model.justify = ''
-			this.justifyDate = nowUTC()
+			this.justifyDate = DateUtils.nowUTC()
 		},
 	},
 

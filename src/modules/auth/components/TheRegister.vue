@@ -31,7 +31,7 @@
 					<div class="col s10 m8">
 						<div class="field label prefix">
 							<i>password</i>
-							<input-password  v-model="model.password"></input-password>
+							<input-password v-model="model.password"></input-password>
 							<label>Clave de acceso</label>
 						</div>
 					</div>
@@ -49,12 +49,12 @@
 				</div>
 
 
-				<nav>
-					<div class="row">
-						<div class="col s12 m6"><button @click="registerUser" class="large-width center-aling">Sign Up</button>
-						</div>
+				<div class="row">
+					<div class="col s12 m6">
+						<button @click="registerUser" class="responsive">Sign Up</button>
 					</div>
-				</nav>
+				</div>
+
 
 				<div class="row">
 					<div class="col s12 m6 center-align">

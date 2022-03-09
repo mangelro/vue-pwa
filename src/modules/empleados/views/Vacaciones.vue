@@ -46,19 +46,15 @@
 		<button @click="save">Registrar</button>
 		<button @click="clear">Clear</button>
 	</nav>
+	<Teleport to="body">
+		<beer-toast id="toast" ref="beerToast"></beer-toast>
+	</Teleport>	
 </template>
 
 <script>
-import { PERIODOS } from '../utils/Periodos'
-import { DaysBetweenDates, nowUTC } from '@/utils/DateHelper'
+import {daysBetweenDates, nowUTC, toDateTimeString } from '@/utils/dateHelper'
+import {PERIODOS} from '../utils/Periodos'
 import {vacacionesModel} from '../models'
-
-const options = {
-	weekday: 'long',
-	year: 'numeric',
-	month: 'long',
-	day: 'numeric',
-}
 
 export default {
 	props: {
@@ -72,22 +68,31 @@ export default {
 		model:vacacionesModel,
 		permisos: PERIODOS,
 	}),
+	
 	computed: {
+
 		diasPeriodo() {
-			const days = DaysBetweenDates(this.model.iniPeriodo, this.model.endPeriodo)
+			const days = daysBetweenDates(this.model.iniPeriodo, this.model.endPeriodo)
+
+			if (days<0){
+				this.$refs.beerToast.warning('La fecha final no puede ser anteior a la inicial',{msToHide:1500})
+				return 'error'
+			}
 			return days + (days===1? ' día': ' días')
 		},
+
 		toDateStringIni() {
-			return this.model.iniPeriodo.toLocaleDateString('es-ES', options)
+			return toDateTimeString(this.model.iniPeriodo,{hour:null,minute:null})
 		},
+
 		toDateStringFin() {
-			return this.model.endPeriodo.toLocaleDateString('es-ES', options)
+			return toDateTimeString(this.model.endPeriodo,{hour:null,minute:null})
 		},
 	},
 
 	methods: {
 		save(){
-			console.log(this.model.iniPeriodo.toISOString())
+			console.log(this.model.iniPeriodo)
 		},
 
 		clear() {

@@ -1,6 +1,6 @@
 <script>
-import { h, defineComponent } from 'vue'
-import {DEFAULT_OPTIONS, TYPES, POSITIONS } from '../utils/ToastOptions'
+import {DEFAULT_OPTIONS, POSITIONS, TYPES} from '../utils/toastOptions'
+import {defineComponent, h} from 'vue'
 
 export default defineComponent({
 	name: 'BeerToast',
@@ -36,7 +36,7 @@ export default defineComponent({
 
 			this.options=localOptions
 
-			this._configureClass(localOptions)
+			this.configureClass(localOptions)
 			this.message = message
 
 			// eslint-disable-next-line no-undef

@@ -1,14 +1,17 @@
-//import axios from 'axios'
-
-//import  * from '../modules/empleados/services'
-import FirmasApi from '../modules/firmas/services/signature.service'
+/**
+ * 
+ */
 import Auth from '../modules/auth/services/auth.service'
+import EmployeeService from '../modules/empleados/services/employees.service'
+import FirmasApi from '../modules/firmas/services/signature.service'
 
 const Plugin = {
 	install(app) {
+	
 		// Initialize API factoies
 		const factories = {
 			signature: FirmasApi,
+			employees:EmployeeService,
 			auth: Auth,
 		}
 

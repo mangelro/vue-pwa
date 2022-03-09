@@ -3,7 +3,6 @@
  * 
  * 
  */
-
 const USER_KEY='user_loged.v1'
 
 class TokenService {
@@ -15,7 +14,7 @@ class TokenService {
 	 * Retorna el usuario almacenado localmente
 	 * @returns {Object} Usuario almacenado localmente
 	 */
-	getUser= ()=>{
+	getUser=()=>{
 		const user=localStorage.getItem(USER_KEY)||sessionStorage.getItem(USER_KEY)
 
 		if (user){
@@ -63,13 +62,9 @@ class TokenService {
 	 * @param {String} accessToken Token de Acceso
 	 */
 	updateLocalAccessToken(accessToken){
-
-
 		const user = this.getUser()
 		const newUser= {...user}
 		newUser.accessToken = accessToken
-		
-		console.log('updateLocalAccessToken',user.accessToken,newUser.accessToken)		
 		
 		this.setUser(newUser,this.rememberMe)
 	}
@@ -82,7 +77,6 @@ class TokenService {
 		else
 			sessionStorage.removeItem(USER_KEY)
 	}
-
 }
 
 export default new TokenService()

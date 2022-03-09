@@ -4,4 +4,6 @@
  * @returns true si es absoluta
  */
 
-export const isAbsoluteUrl= (url) => url.startsWith('http')||url.startsWith('https')
+export const isAbsoluteUrl= (url) => {
+	return url.startsWith('http://')||url.startsWith('https://')
+}

@@ -7,6 +7,9 @@
 		<div class="col s12">
 			<employee-header :employeeId="id" :showOptions="true" ></employee-header>
 		</div>
+		<div class="col s12">
+			<a class="chip border right-round bottom-round">{{dateToString}}</a>
+		</div>
 
 		<div class="col s12">
 			<div class="signature-wrapper">
@@ -24,10 +27,12 @@
 
 		<div class="col s12">
 			<div class="field label border">
-				<input-password v-model="model.pin" maxlength="4"></input-password>
+				<input-password v-model="model.pin"></input-password>
 				<label>PIN</label>
 			</div>
 		</div>
+
+
 	</div>
 
 	<nav>
@@ -35,23 +40,20 @@
 		<button @click="clear">Clear</button>
 	</nav>
 
-
-	<div v-if="model">
-		{{model.location}}
-	</div>
-
 	<Teleport to="body">	
 		<beer-toast id="toastFirma" ref="beerToast"></beer-toast>
 	</Teleport>
-	
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import { nowUTC, toDateTimeString } from '@/utils/dateHelper'
 import { defineAsyncComponent } from '@vue/runtime-core'
-import { registerModel } from '../models'
 import { getCurrentPosition } from '../utils/Location'
+import { registerModel } from '../models'
 
 export default {
+	
 	components: {
 		TheTime: defineAsyncComponent(() => import('@/components/TheTime')),
 		EmployeeHeader: defineAsyncComponent(() => import('../components/EmployeeHeader')),
@@ -63,7 +65,15 @@ export default {
 			required: true,
 		},
 	},
-	
+
+	computed:{
+		...mapGetters('signatures',['lastSignature']),
+
+		dateToString(){
+			return toDateTimeString(this.lastSignature(this.id)?.date)
+		}
+	},
+
 	watch:{
 		id(){
 			this.model.employeeId = this.id
@@ -79,6 +89,9 @@ export default {
 	},
 
 	methods: {
+
+		...mapActions('signatures',['saveSignature']),
+
 		undo() {
 			this.$refs.signaturePad.undoSignature()
 		},
@@ -92,8 +105,8 @@ export default {
 		},
 
 		async save() {
-			const { isEmpty, data } = this.$refs.signaturePad.saveSignature()
-
+			const { isEmpty, data }=this.$refs.signaturePad.saveSignature()
+			
 			if (isEmpty || this.model.pin.length === 0) {
 				this.$refs.beerToast.warning('Faltan algunos datos obligatorios',{msToHide:2000})
 				return
@@ -102,7 +115,7 @@ export default {
 			this.$refs.signaturePad.lockSignaturePad()
 
 			this.model.signature = data
-			this.model.date = new Date().toISOString()
+			this.model.date = nowUTC()
 
 			try{
 				try {
@@ -112,8 +125,8 @@ export default {
 				} catch (err) {
 					console.warn(err)
 				}
-				
-				await this.$api.signature.postRegistro(this.model)			
+				//TODO
+				await this.saveSignature(this.model)
 				this.clear()
 			}
 			catch (err){

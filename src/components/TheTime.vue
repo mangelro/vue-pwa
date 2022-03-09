@@ -1,25 +1,27 @@
 <template>
 	<div class="time-wrapper">
-		<h4>{{toDateString}}</h4>
+		<h5>{{toDateString}}</h5>
 	</div>
 	
 </template>
 
 <script>
+
+import {toDateTimeString} from '@/utils/dateHelper'
+
 export default {
 	data: ()=>({
 		theTime:new Date()
 	}),
 	computed:{
 		toDateString(){
-			const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
-			return this.theTime.toLocaleTimeString('es-ES',options)
+			return toDateTimeString(this.theTime)
 		}
 
 	},
 
 	created(){
-		setInterval(()=>{this.theTime=new Date()},500)
+		setInterval(()=>{this.theTime=new Date()},1000)
 	}
 }
 </script>

@@ -4,8 +4,6 @@
  */
 import * as components from './components/components'
 
-
-
 // eslint-disable-next-line no-unused-vars
 const install = (app,options={}) => {
 	Object.entries(components).forEach(([componentName, component]) => {
@@ -20,6 +18,6 @@ const install = (app,options={}) => {
 	
 }
 
-export default  install
+export default install
 
 //export * from './components/components'

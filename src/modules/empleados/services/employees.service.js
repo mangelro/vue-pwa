@@ -22,7 +22,7 @@ class EmployeeService extends ServiceBase {
 	 */
 	getEmployees(id){
 
-		return this.client.get(API_ENDPOINT.URL_USERS(id,'employee'),{headers: this.authHeader()})
+		return this.client.get(API_ENDPOINT.URL_GET_USERS(id,'employee'),{headers: this.authHeader()})
 			.then(response=>{
 				return response.data
 			})
@@ -33,4 +33,6 @@ class EmployeeService extends ServiceBase {
 	}
 }
 
-export default new EmployeeService() //Crea un singleton???
+const employeeServiceInstance= new EmployeeService() //Crea un singleton???
+
+export default employeeServiceInstance

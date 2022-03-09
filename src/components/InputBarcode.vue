@@ -1,4 +1,3 @@
-import { nextTick } from '@vue/runtime-core';
 <template>
 	<input 
 		type="text" 
@@ -6,8 +5,7 @@ import { nextTick } from '@vue/runtime-core';
 		@keypress="onHandleKeyPress"
 		ref="theInput"
 		:value="value"
-		@input="onInput"
-	>
+		@input="onInput">
 </template>
 <script>
 
@@ -16,9 +14,14 @@ import { nextTick } from '@vue/runtime-core';
 // 	setTimeout(()=>resolve('ok'),timeout)
 // })
 
-
-
-
+/**
+ * Valores por defecto
+ */
+const defaultOptions={
+	autoDel:true,
+	minChars:4,
+	keyCode:13
+}
 
 export default {
 
@@ -39,23 +42,21 @@ export default {
 		options:{
 			type:Object,
 			required:false,
-			default:()=>({
-				autoDel:true,
-				minChars:4
-			})
+			default(){
+				return {
+					...defaultOptions
+				}
+			}
 		}
 	},
-
-
 
 	emits: ['update:modelValue','codeReaded'],
 
 	data(){
 		return{
-		
 			/*
-			 * No se inicializa con this.modelValue ya que no me interesa un valor. Es un component
-			 * de solo lecura*/
+			 * No se inicializa con this.modelValue ya que no me interesa establecer un valor. Es un component
+			 * de solo lectura*/
 			value:'',
 			inputStart:null,
 			inputStop:null,
@@ -72,6 +73,11 @@ export default {
 		}
 	},
 
+	computed:{
+		normalizedOptions(){
+			return Object.assign(defaultOptions, this.options)
+		},
+	},
 
 	methods:{
 
@@ -92,10 +98,9 @@ export default {
 			if (this.timing) {
 				clearTimeout(this.timing)
 			}
-
 			
 			// handle the key event
-			if (event.which === 13) {
+			if (event.which === this.normalizedOptions.keyCode) {
 				// Enter key was entered
 				
 				// don't submit the form
@@ -103,7 +108,7 @@ export default {
 
 				// Ha terminado el usuario la entrada manual?
 
-				if (this.value.length >= this.options.minChars) {
+				if (this.value.length >= this.normalizedOptions.minChars) {
 					this.userFinishedEntering = true // incase the user pressed the enter key
 					this.inputComplete()
 				}
@@ -136,7 +141,7 @@ export default {
 		onInputBlur(){
 			clearTimeout(this.timing)
             
-			if (this.value.length >= this.options.minChars) {
+			if (this.value.length >= this.normalizedOptions.minChars) {
 				this.userFinishedEntering = true
 				this.inputComplete()
 			}
@@ -150,7 +155,7 @@ export default {
 			clearTimeout(this.timing)
 			
 			// if the value is being entered manually and hasn't finished being entered
-			if (!this.isUserFinishedEntering() || this.value.length < this.options.minChars) {
+			if (!this.isUserFinishedEntering() || this.value.length < this.normalizedOptions.minChars) {
 				// keep waiting for input
 				return
 			}
@@ -187,7 +192,7 @@ export default {
 			this.lastKey = null
 
 			// clear the results
-			if (this.options.autoDel){
+			if (this.normalizedOptions.autoDel){
 				this.value=''
 			}
 		
@@ -209,6 +214,4 @@ export default {
 
 	},
 }
-
-
 </script>

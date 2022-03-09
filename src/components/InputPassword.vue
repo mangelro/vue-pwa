@@ -107,11 +107,5 @@ export default {
 			e.target.setSelectionRange(index, index)
 		}
 	},
-	
-	// mounted() {
-	// 	// eslint-disable-next-line no-undef
-	// 	ui()
-	// },
-	
 }
 </script>

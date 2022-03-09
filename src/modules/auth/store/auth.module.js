@@ -2,8 +2,8 @@
  * 
  * 
  */
-import TokenService from  '@/services/token.service'
 import AuthService from '../services/auth.service'
+import TokenService from '@/services/token.service'
  
 const user = TokenService.getUser()
  
@@ -44,41 +44,20 @@ export default {
 	actions: {
 
 		async login({commit},login){
-			try
-			{
-				const user = await AuthService.login(login)
-		
-				commit('loginSuccess', user)
-				
-				return Promise.resolve(user)
-			}
-			catch(error)
-			{
-				console.error(error)
-				
-				commit('loginFailure')
-				return Promise.reject(error)
-			}
+			const user = await AuthService.login(login)
+			commit('loginSuccess', user)
+			return user
 		},
 		
-		logout({ commit }) {
-			AuthService.logout()
+		async logout({ commit }) {
+			await AuthService.logout()
 			commit('logout')
 		},
 
 		async register({ commit }, user) {
-			try
-			{
-				const response = await AuthService.register(user)
-				commit('registerSuccess')
-				return Promise.resolve(response.data)
-
-			}
-			catch (error)
-			{
-				commit('registerFailure')
-				return Promise.reject(error)
-			}
+			const registedUser = await AuthService.register(user)
+			commit('registerSuccess')
+			return registedUser
 		}
 	},
 

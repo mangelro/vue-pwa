@@ -16,25 +16,11 @@ import { mapState } from 'vuex';
 import {mapActions,mapState} from 'vuex'
 
 export default {
-
-	// data:()=>({
-	// 	isLoggedIn:false,
-	// 	currentUser:null
-	// }),
-
 	computed:{
-
 		...mapState('auth',{
 			isLoggedIn:(state)=>state.status.loggedIn,
 			userName:(state) =>state.user.userName
 		}),
-
-		// isLoggedIn(){
-		// 	return this.$store.state.auth.status.loggedIn
-		// },
-		// currentUser(){
-		// 	return this.$store.state.auth.user
-		// }
 	},
 
 	inject:['eventBus'], //eventBus DI
@@ -47,14 +33,14 @@ export default {
 			this.$router.push({name:'Home'})
 		}
 	},
-	mounted() {
-		this.eventBus.$on('logout', async () => {
-			this.logOut()
-		})
-	},
-	beforeUnmount() {
-		this.eventBus.$off('logout')
-	}
+	// mounted() {
+	// 	this.eventBus.$on('logout', async () => {
+	// 		this.logOut()
+	// 	})
+	// },
+	// beforeUnmount() {
+	// 	this.eventBus.$off('logout')
+	// }
 	
 }
 </script>

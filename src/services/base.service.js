@@ -2,14 +2,12 @@
  *
  *
  */
-
-import axios from 'axios'
-import TokenService from  '@/services/token.service'
 import API_ENDPOINT from '@/services/api.endpoints'
+import axios from 'axios'
+import EVENTBUS from '@/utils/eventBus'
+import TokenService from '@/services/token.service'
 
-import EVENTBUS from '@/utils/EventBus'
-
-export  default class ServiceBase {
+export default class ServiceBase {
 	
 	constructor() {
 
@@ -19,21 +17,17 @@ export  default class ServiceBase {
 			baseURL: API_ENDPOINT.URL_BASE_API,
 			timeout: 10000,
 			headers:{
-				'accept': 'application/json',
-				'x-develop':'FdO'
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
 			}
-			//,
-			// transformRequest: [
-			// 	// eslint-disable-next-line no-unused-vars
-			// 	(data,header) => {
-			// 		// modify data here
-			// 		console.log('transformRequest',data)
-			// 		//return data
-			// 	}
-			// ]
+			,transformRequest: [
+				(data, headers) => {
+					headers['X-Develop']='fdo'
+					const newData={...data} //WARNING:Si objeto de datos está anidado puede dar problemas
+					return JSON.stringify(newData)
+				},
+			]
 		})
-
-		
 	}
 
 	/**
@@ -83,7 +77,7 @@ export  default class ServiceBase {
 			},
 			async (err) => {
 				const originalConfig = err.config
-				const originalCLient = this.client
+				const originalClient = this.client
 
 				if (originalConfig.url !== API_ENDPOINT.URL_SIGNIN && err.response) {
 
@@ -92,7 +86,7 @@ export  default class ServiceBase {
 						originalConfig._retry = true
 						try {
 
-							const rs = await originalCLient.post(API_ENDPOINT.URL_REFRESH, {
+							const rs = await originalClient.post(API_ENDPOINT.URL_REFRESH, {
 								accessToken: TokenService.getLocalAccessToken(), //No es necesario
 								refreshToken: TokenService.getLocalRefreshToken()
 							})
@@ -104,7 +98,7 @@ export  default class ServiceBase {
 
 							originalConfig.headers.Authorization='Bearer ' + accessToken
 
-							return originalCLient(originalConfig)
+							return originalClient(originalConfig)
 
 						} catch (_error) {
 							return Promise.reject(_error)
@@ -115,6 +109,4 @@ export  default class ServiceBase {
 			}
 		)
 	}
-
 }
-

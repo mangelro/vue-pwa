@@ -9,15 +9,9 @@
  * logout(): remove JWT from Local Storage
  * register(): POST {username, email, password}
  */
-
-// import axios from 'axios'
-// const API_URL = 'http://localhost:41321/v1/auth'
-
-import ServiceBase from '@/services/base.service'
-import TokenService from  '@/services/token.service'
 import API_ENDPOINT from '@/services/api.endpoints'
-
-
+import ServiceBase from '@/services/base.service'
+import TokenService from '@/services/token.service'
 
 class AuthService extends ServiceBase{
 
@@ -36,11 +30,10 @@ class AuthService extends ServiceBase{
 		
 			if (response.data.success) {
 				const {id,userName,email,accessToken,roles,expires,refreshToken} = response.data
-
 				const loginUser={id,userName,email,roles,accessToken,expires,refreshToken}
-					
-				TokenService.setUser(loginUser,login.rememberMe)
 
+				TokenService.setUser(loginUser,login.rememberMe)
+				this.eventBus.$emit('user-signIn',loginUser)
 				return loginUser
 			}
 			/*si lanzo una excepción en THEN salta a CATCH */
@@ -56,7 +49,11 @@ class AuthService extends ServiceBase{
 	 * @returns 
 	 */
 	logout() {
-		return Promise.resolve(TokenService.removeUser())
+		return new Promise(resolve =>{
+			TokenService.removeUser()
+			this.eventBus.$emit('user-signOut')
+			resolve()
+		})
 	}
 
 	/**

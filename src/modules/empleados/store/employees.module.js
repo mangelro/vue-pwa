@@ -1,14 +1,9 @@
 /**
- * 
- * 
- * 
+ *  
  * 
  */
-
-
 import EmployeesService from '../services/employees.service'
 import TokenService from  '@/services/token.service'
-
 
 export default {
 	namespaced: true,
@@ -55,17 +50,11 @@ export default {
 			return [...employees]
 		},
 
-
-
-
-
 		/* 	retorna una función para posibilidar el uso de
 			parámetros enlos getters
 		 */
 		getEmployeById: (state) => (id = 0) => {
-
-
-			
+		
 			const employee = state.employees.find(e => e.id === id)
 				
 			if (!employee) return {}
@@ -75,6 +64,4 @@ export default {
 			return employee
 		}
 	},
-
-
 }

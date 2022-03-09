@@ -2,7 +2,7 @@
  * 
  */
 
-import {nowUTC } from '@/utils/DateHelper'
+import {nowUTC} from '@/utils/dateHelper'
 
 export const vacacionesModel={
 	iniPeriodo:nowUTC(),

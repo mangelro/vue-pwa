@@ -1,14 +1,15 @@
 /**
- * 
- * 
+ * 	Authorization de las rutas
+  *  			'?' 	- No necesita estar autenticado -anónimo- (equivale también undefined). 
+ * 				'*'		- Necesita estar autenticado pero no necesita un rol en particular.
+ * 	'admin,editor'..	- Necesita estar autenticado y un rol concreto.
  * 
  */
-import { createRouter, createWebHistory } from 'vue-router'
 
-import TokenService from '../services/token.service'
-
-import registro from '../modules/firmas/router'
+import {createRouter, createWebHistory} from 'vue-router'
 import empleados from '../modules/empleados/router'
+import registro from '../modules/firmas/router'
+import TokenService from '../services/token.service'
 
 const routes = [
 	{
@@ -72,7 +73,7 @@ const router = createRouter({
 /**
  * 	authorization de las rutas
  * 	
- *  			'?' 	- No necesita estar autenticado. No posee roles
+ *  			'?' 	- No necesita estar autenticado. No posee roles -anónimo-
  * 				'*'		- Necesita estar autenticado pero no necesita un rol en particular
  * 	'admin,editor'..	- Necesita estar autenticado y un rol concreto
  * 
@@ -82,19 +83,29 @@ router.beforeEach( async to => {
 
 	const userAuthenticated= TokenService.getUser() //Usuario en almacenamiento local
 	
-	const userRoles=userAuthenticated?.roles??'?' //Si no existe el usuario el rol es ?
+	const userRoles=userAuthenticated?.roles??'?' //Si no existe el usuario el rol es ? -anónimo-
 
 	const urlAutorizacion=to.meta.authorization||'?' //roles autorizados en la url
 
-	//console.log('authorization',userRoles,urlAutorizacion)
-
 	if (urlAutorizacion!=='?' && to.name !== 'Login'){
-		if (!canAccess(userRoles,urlAutorizacion)) {  //❗️ Avoid an infinite redirect
+		if (!canAccess(userRoles,urlAutorizacion)) { 
 			return {name:'Login', query:{r:encodeURIComponent(to.fullPath)}}
 		}
 	}
 })
 
+/**
+ * 
+ * @param {String,Array} roles 
+ * @returns {Array}
+ */
+const normaliceRoles=(roles)=>
+{
+	return Array.isArray(roles)
+		? roles 
+		: roles.split(',') 
+}
+ 
 /**
  *  Determina si el usuario posee los roles necesarios para acceder a la url
  * 
@@ -105,23 +116,13 @@ router.beforeEach( async to => {
 const canAccess = (userAuthentication,urlAuthentication)=>{
 	
 	
-	const userRoles=Array.isArray(userAuthentication)
-		? userAuthentication 
-		: userAuthentication.split(',') //roles del usuario
-
-	
-	const urlRoles = Array.isArray(urlAuthentication)
-		? urlAuthentication
-		: urlAuthentication.split(',') //roles requeridos
-
-	
+	const userRoles = normaliceRoles(userAuthentication)
+	const urlRoles = normaliceRoles(urlAuthentication)
 
 	if (urlRoles.includes('*') && !userRoles.includes('?'))
 		return true
-
 	
-	
-	const notFound= userRoles.every(userRol  => {
+	const notFound= userRoles.every(userRol => {
 	
 		if (urlRoles.includes(userRol))
 			return false
@@ -130,9 +131,6 @@ const canAccess = (userAuthentication,urlAuthentication)=>{
 	})
 
 	return !notFound
-
-
-
 }
 
 export default router

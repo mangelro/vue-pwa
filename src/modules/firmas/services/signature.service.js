@@ -3,6 +3,7 @@
  * 
  */
 
+import API_ENDPOINT from '@/services/api.endpoints'
 import ServiceBase from '@/services/base.service'
 
 class SignatureService  extends ServiceBase {
@@ -11,19 +12,28 @@ class SignatureService  extends ServiceBase {
 	 * Envío de firma de emplado
 	 * @param {*} signature 
 	 */
-	async postRegistro(signature){
-		await this.client.post('/signatures',signature)
+	registroFirma(signature){
+		return this.client.post(API_ENDPOINT.URL_SIGNATURE,signature,{headers: this.authHeader()})
+			.then(response=>{
+				const{data}=response
+				
+				this.eventBus.$emit('signature-created',data)
+				return data
+			})
 	}
 
 	/**
 	 * Envia una justificación
 	 * @param {*} justify 
 	 */
-	async postJustificacion(justify){
+	registroJustificacion(justify){
+		return this.client.post(API_ENDPOINT.URL_JUSTIFIES,justify,{headers: this.authHeader()})
+			.then(response=>{
+				const{data}=response
 
-		const {data} = await this.client.post('/signatures/justifies',justify,{headers: this.authHeader()})
-	
-		return data
+				this.eventBus.$emit('justify-created',data)
+				return data
+			})
 	}
 
 	/**
@@ -32,10 +42,11 @@ class SignatureService  extends ServiceBase {
 	 * @param {Guid} id Identificador del empleado
 	 * @returns Última firma del empleado
 	 */
-	async getLastSignatureById(id){
-		const {data} = await this.client.get(`/signatures/${id}/last`,{headers: this.authHeader()})
-
-		return data
+	getLastSignatureById(id){
+		return this.client.get(API_ENDPOINT.URL_GET_SIGNATURE(id),{headers: this.authHeader()})
+			.then(response=>{
+				return response.data
+			})
 	}
 
 	/**
@@ -53,8 +64,4 @@ class SignatureService  extends ServiceBase {
 	}
 }
 
-
 export default new SignatureService
-
-
-
