@@ -19,7 +19,7 @@ export const daysBetweenDates = (ini,fin) => {
 	const diff = date2 - date1 //diferencia en ml
 	const days = diff / ML_PER_DAY
 
-	return (Math.ceil(Math.abs(days)) + 1) * (diff<0?-1:1)
+	return (Math.ceil(Math.abs(days)) + 1) * Math.sign(diff)
 }
 
 /**
@@ -63,11 +63,14 @@ const normalizeOptions = (def,opt) =>
 {
 	const newDef={...def}
 
-	for (const [key, value] of Object.entries(opt)) {
-		if (value===null)
+	for (let [key, value] of Object.entries(opt)) {
+		if (value===null){
 			delete newDef[key]
-		else
+		}
+		else{
 			newDef[key]=value
+		}
+			
 	}
 	
 	return newDef
@@ -82,8 +85,10 @@ const normalizeOptions = (def,opt) =>
  */
 export const toDateTimeString = (date,options={},lang='es-ES') =>
 {
-	if (!date) return ''
-
+	if (!date) {
+		return ''
+	}
+		
 	const newOption=normalizeOptions(defaultOptions,options)
 
 	const currentDate= Date.parse(date)

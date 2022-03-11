@@ -17,9 +17,10 @@ const mount = (component, { props, children, element, app } = {}) => {
 	let vNode = h(component, props, children)
 
 	if (app && app._context) {
+		
 		vNode.appContext = app._context
 	}
-
+	
 	render(vNode, el)
 
 	const destroy = () => {
