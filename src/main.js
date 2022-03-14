@@ -14,6 +14,7 @@ import router from './router'
 import store from './store'
 import VueSignaturePad from 'vue-signature-pad'
 
+
 import './assets/dropzone.css'
 import './registerServiceWorker'
 

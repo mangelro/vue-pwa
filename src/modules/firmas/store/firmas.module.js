@@ -16,9 +16,9 @@ export default {
 			const idx=state.lastSigns.findIndex(s=> s.employeeId===signature.employeeId)
 				
 			if (idx<0)
-				state.lastSigns.push(signature)
+			{state.lastSigns.push(signature)}
 			else
-				state.lastSigns[idx]=signature
+			{state.lastSigns[idx]=signature}
 
 		}
 	},
@@ -41,7 +41,7 @@ export default {
 				const sign=state.lastSigns.find(s=> s.employeeId===id)
 				
 				if (!sign)
-					return
+				{return}
 
 				return {...sign}
 			}

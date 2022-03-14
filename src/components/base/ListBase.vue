@@ -24,20 +24,20 @@
 <script>
 
 export default {
-  props:{
-    items:{
-      type:Array,
-      required:true
-    }
-  },
+	props:{
+		items:{
+			type:Array,
+			required:true
+		}
+	},
   
-  emits:['Selected'],
+	emits:['Selected'],
 
-  methods:{
-    selectedItem(id){
-      this.$emit('Selected',id)
-    }
-  }
+	methods:{
+		selectedItem(id){
+			this.$emit('Selected',id)
+		}
+	}
 
 }
 </script>

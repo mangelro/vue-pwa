@@ -8,7 +8,6 @@ export const loginModel = {
 }
 
 
-
 export const RegisterModel = {
 	username: '',
 	password: '',

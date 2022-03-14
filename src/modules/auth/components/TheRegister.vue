@@ -68,8 +68,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { RegisterModel } from '../models/auth.model'
-import {mapActions} from 'vuex'
 
 export default {
 	props: {

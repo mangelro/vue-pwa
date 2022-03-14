@@ -102,7 +102,7 @@ export default {
 		 * Verifica que la url es un ruta absoluta
 		 */
 		throwIfNotAbsoluteUrl(url) {
-			if (!isAbsoluteUrl(url)) throw `Url no válida ${url}`
+			if (!isAbsoluteUrl(url)) {throw `Url no válida ${url}`}
 		},
 
 		/**

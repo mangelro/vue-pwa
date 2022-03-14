@@ -16,6 +16,5 @@ export const justifyModel={
 }
 
 
-
 //export default  Object.seal(registerModel)  //Haciendo esto evitamos añadir/eliminar propiedades pero pierde la reactividad.
 

@@ -54,7 +54,7 @@ class TokenService {
 		const user = this.getUser()
 		
 		if (user && user.refreshToken)
-			return user.refreshToken
+		{return user.refreshToken}
 
 	}
 	/**
@@ -73,9 +73,9 @@ class TokenService {
 	 */
 	removeUser() {
 		if (this.rememberMe)
-			localStorage.removeItem(USER_KEY)
+		{localStorage.removeItem(USER_KEY)}
 		else
-			sessionStorage.removeItem(USER_KEY)
+		{sessionStorage.removeItem(USER_KEY)}
 	}
 }
 

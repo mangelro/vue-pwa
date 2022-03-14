@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapGetters,mapActions } from 'vuex'
+import { mapActions,mapGetters } from 'vuex'
 //import ListBase from '@/components/base/ListBase'
 
 export default {

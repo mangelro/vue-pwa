@@ -29,7 +29,7 @@ export const getCurrentPosition = (options) => {
 
 		const supported = typeof window !== 'undefined' && navigator && 'geolocation' in navigator
 
-		if (!supported) reject('geolocation not supported')
+		if (!supported) {reject('geolocation not supported')}
 
 		navigator.geolocation.getCurrentPosition(
 			({ coords }) => {

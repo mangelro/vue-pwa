@@ -6,7 +6,7 @@
 import API_ENDPOINT from '@/services/api.endpoints'
 import ServiceBase from '@/services/base.service'
 
-class SignatureService  extends ServiceBase {
+class SignatureService extends ServiceBase {
 
 	/**
 	 * Envío de firma de emplado

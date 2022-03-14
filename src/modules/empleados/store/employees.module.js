@@ -3,7 +3,7 @@
  * 
  */
 import EmployeesService from '../services/employees.service'
-import TokenService from  '@/services/token.service'
+import TokenService from '@/services/token.service'
 
 export default {
 	namespaced: true,
@@ -35,7 +35,7 @@ export default {
 				const employees = await EmployeesService.getEmployees(id) //TODO: No es correcto. Ha de ser el Id de la empresa
 	
 				if(employees)
-					commit('setEmployees',[...employees])
+				{commit('setEmployees',[...employees])}
 
 			}
 
@@ -57,7 +57,7 @@ export default {
 		
 			const employee = state.employees.find(e => e.id === id)
 				
-			if (!employee) return {}
+			if (!employee) {return {}}
 			
 			
 			//return { ...employee } //es MUY aconsejable devolver una copia por si se modifica, no modificar el State!!!!!

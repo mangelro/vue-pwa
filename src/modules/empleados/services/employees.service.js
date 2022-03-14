@@ -4,8 +4,8 @@
  *
  */
 
-import ServiceBase from '@/services/base.service'
 import API_ENDPOINT from '@/services/api.endpoints'
+import ServiceBase from '@/services/base.service'
 
 
 class EmployeeService extends ServiceBase {

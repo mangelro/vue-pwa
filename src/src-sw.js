@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 
 
-workbox.setConfig({ debug: true });
+workbox.setConfig({ debug: true })
 
 // define a prefix for your cache names. It is recommended to use your project name
-workbox.core.setCacheNameDetails({prefix:  "vue-pwa"})
+workbox.core.setCacheNameDetails({prefix:  'vue-pwa'})
 
 // These lines are responsible for precaching static resources. Using 'generateSW'(zero config), these lines would be added automatically to the serviceworker. 
 // __precacheManifest is the list of resources you want to precache. It will be generated and imported automatically by workbox during build time 
@@ -21,7 +21,7 @@ workbox.routing.registerRoute(
 			new workbox.expiration.Plugin({
 				maxAgeSeconds: 10 * 60 // 10 minutes
 			})
-		] }), 'GET');
+		] }), 'GET')
 
 
 // workbox.routing.registerRoute(

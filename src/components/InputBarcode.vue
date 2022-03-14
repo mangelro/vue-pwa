@@ -29,7 +29,7 @@ export default {
 		id:{
 			type:String,
 			required:false,
-			default:() =>  {
+			default:() => {
 				return '_myBarcodeReader_' + Math.ceil(performance.now(),0)
 			}
 		},

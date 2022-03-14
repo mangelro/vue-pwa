@@ -119,18 +119,22 @@ const canAccess = (userAuthentication,urlAuthentication)=>{
 	const userRoles = normaliceRoles(userAuthentication)
 	const urlRoles = normaliceRoles(urlAuthentication)
 
-	if (urlRoles.includes('*') && !userRoles.includes('?'))
+	if (urlRoles.includes('*') && !userRoles.includes('?')){
 		return true
+	}
 	
-	const notFound= userRoles.every(userRol => {
+	// const notFound= userRoles.every(userRol => {
 	
-		if (urlRoles.includes(userRol))
-			return false
+	// 	if (urlRoles.includes(userRol))
+	// 	{return false}
 
-		return true
-	})
+	// 	return true
+	// })
 
-	return !notFound
+	// return !notFound
+
+	return urlRoles.some(r=> userRoles.includes(r))
+
 }
 
 export default router
